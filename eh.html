@@ -1635,11 +1635,11 @@
                 <button class="banner-btn" onclick="initAudio(); toggleMute()" id="muteBtn" title="Toggle sounds">
                     🔊
                 </button>
-                <button class="banner-btn" onclick="showLandingPage()">
-                    📖 About Wenie
-                </button>
                 <a href="#demo" class="banner-btn" onclick="startDemo()">
                     ▶️ Try Demo
+                </a>
+                <a href="#" class="banner-btn">
+                    📖 Learn More
                 </a>
             </div>
             <button class="banner-close" onclick="closeBanner()">
@@ -1673,7 +1673,6 @@
         
         <div class="demo-controls">
             <button class="demo-btn" onclick="startDemo()" id="startBtn">▶️ Start Demo</button>
-            <button class="demo-btn" onclick="showLandingPage()" style="background: #CE84CF; margin-top: 10px;">📖 Learn More About Wenie</button>
             <div class="step-indicator" id="stepIndicator">Ready to begin</div>
             <button class="demo-btn" onclick="resetDemo()">🔄 Reset Demo</button>
         </div>
@@ -2053,18 +2052,6 @@
             
             // Reset demo
             resetDemo();
-        }
-        
-        function showLandingPage() {
-            const landingPage = document.getElementById('landingPage');
-            landingPage.style.display = 'flex';
-            landingPage.classList.remove('hidden');
-            
-            // Reset demo state
-            resetDemo();
-            
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
         function startDemo() {
