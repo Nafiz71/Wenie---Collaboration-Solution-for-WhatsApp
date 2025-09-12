@@ -327,6 +327,122 @@
             color: rgba(255,255,255,0.9);
         }
         
+        .user-stories {
+            display: grid;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .user-story {
+            background: rgba(37,211,102,0.05);
+            border: 2px solid rgba(37,211,102,0.2);
+            border-radius: 15px;
+            padding: 30px;
+        }
+        
+        .story-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .story-icon {
+            font-size: 2.5rem;
+        }
+        
+        .story-header h4 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #25D366;
+            margin: 0;
+        }
+        
+        .story-need {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+        }
+        
+        .pain-solution {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .pain {
+            background: rgba(255,77,77,0.1);
+            border-left: 4px solid #ff4d4d;
+            padding: 15px;
+            border-radius: 8px;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .solution {
+            background: rgba(37,211,102,0.1);
+            border-left: 4px solid #25D366;
+            padding: 15px;
+            border-radius: 8px;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .success-metric {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,193,7,0.1));
+            border: 2px solid rgba(255,215,0,0.4);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            color: #FFD700;
+            font-size: 1.1rem;
+        }
+        
+        .wenie-difference {
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(206,132,207,0.1);
+            border: 2px solid rgba(206,132,207,0.3);
+            border-radius: 15px;
+        }
+        
+        .wenie-difference h3 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #CE84CF;
+        }
+        
+        .difference-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .difference-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+        
+        .diff-icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .difference-item strong {
+            display: block;
+            color: #CE84CF;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .difference-item p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            margin: 0;
+        }
+        
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2.5rem;
@@ -449,6 +565,107 @@
                         <li>Designed A/B testing framework for feature optimization</li>
                         <li>Established user research methodology for ongoing insights</li>
                     </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📄 User Stories for Wenie AI Assistant</h2>
+            
+            <div class="user-stories">
+                <div class="user-story">
+                    <div class="story-header">
+                        <span class="story-icon">👨‍💻</span>
+                        <h4>Tech Lead Daily Standup</h4>
+                    </div>
+                    <div class="story-content">
+                        <p class="story-need"><strong>As a tech lead managing 8 engineers,</strong> I want to collect standup updates without juggling Zoom, Slack, Jira, and WhatsApp for 30-60 minutes daily.</p>
+                        
+                        <div class="pain-solution">
+                            <div class="pain">
+                                <strong>🔴 Before:</strong> 45 minutes gathering scattered updates, manual compilation
+                            </div>
+                            <div class="solution">
+                                <strong>🔮 Wenie:</strong> Auto-prompts team, transcribes voice notes, delivers structured summary in 30 seconds
+                            </div>
+                        </div>
+                        
+                        <div class="success-metric">
+                            🏆 <strong>Result:</strong> 45 minutes → 2 minutes (58 minutes saved daily)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="user-story">
+                    <div class="story-header">
+                        <span class="story-icon">🍽️</span>
+                        <h4>Restaurant Manager Weekly Rostering</h4>
+                    </div>
+                    <div class="story-content">
+                        <p class="story-need"><strong>As a restaurant manager coordinating 15 staff,</strong> I want to generate weekly rosters without manually tracking dozens of scattered availability messages.</p>
+                        
+                        <div class="pain-solution">
+                            <div class="pain">
+                                <strong>🔴 Before:</strong> 3 hours scrolling 50+ messages, manual tracking on paper
+                            </div>
+                            <div class="solution">
+                                <strong>🔮 Wenie:</strong> Parses casual messages, generates visual roster, identifies coverage gaps
+                            </div>
+                        </div>
+                        
+                        <div class="success-metric">
+                            🏆 <strong>Result:</strong> 3 hours → 15 minutes (165 minutes saved weekly)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="user-story">
+                    <div class="story-header">
+                        <span class="story-icon">👥</span>
+                        <h4>Friend Group Restaurant Decision</h4>
+                    </div>
+                    <div class="story-content">
+                        <p class="story-need"><strong>As part of a 10-person friend group,</strong> I want to actually decide where to eat without the usual 100+ message debate that often ends with no decision.</p>
+                        
+                        <div class="pain-solution">
+                            <div class="pain">
+                                <strong>🔴 Before:</strong> 82+ messages, multi-day debates, often no decision
+                            </div>
+                            <div class="solution">
+                                <strong>🔮 Wenie:</strong> Auto-detects planning, creates polls, finds optimal time slots
+                            </div>
+                        </div>
+                        
+                        <div class="success-metric">
+                            🏆 <strong>Result:</strong> Decision in under 10 minutes with 80% participation
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="wenie-difference">
+                <h3>✨ The Wenie Difference</h3>
+                <div class="difference-grid">
+                    <div class="difference-item">
+                        <span class="diff-icon">📱</span>
+                        <strong>No App Switching</strong>
+                        <p>Everything in WhatsApp</p>
+                    </div>
+                    <div class="difference-item">
+                        <span class="diff-icon">🗣️</span>
+                        <strong>Natural Language</strong>
+                        <p>No forms or commands</p>
+                    </div>
+                    <div class="difference-item">
+                        <span class="diff-icon">🤖</span>
+                        <strong>Auto Detection</strong>
+                        <p>No manual triggers</p>
+                    </div>
+                    <div class="difference-item">
+                        <span class="diff-icon">📊</span>
+                        <strong>Visual Summaries</strong>
+                        <p>Complex info made clear</p>
+                    </div>
                 </div>
             </div>
         </div>
