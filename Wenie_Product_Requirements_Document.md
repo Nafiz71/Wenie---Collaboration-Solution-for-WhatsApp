@@ -1,11 +1,11 @@
-# WAI - Multi-Context WhatsApp AI Assistant
+# Wenie - WhatsApp AI Collaborative Assistant
 ## Product Requirements Document (PRD)
 
 ---
 
 ## 📋 **Executive Summary**
 
-**WAI (WhatsApp AI Assistant)** is an intelligent, context-aware AI solution that transforms casual WhatsApp conversations into structured, actionable business workflows. WAI seamlessly integrates with existing enterprise tools (Jira, Slack, Calendly) to bridge the gap between informal team communication and formal productivity systems.
+**Wenie (WhatsApp AI Collaborative Assistant)** is an intelligent, context-aware AI solution that transforms casual WhatsApp conversations into structured, actionable business workflows. Wenie seamlessly integrates with existing enterprise tools (Jira, Slack, Calendly) to bridge the gap between informal team communication and formal productivity systems.
 
 ### **Vision Statement**
 *"Transform every WhatsApp conversation into intelligent, actionable business outcomes while preserving the natural flow of team communication."*
@@ -34,7 +34,7 @@ Enable teams to leverage their existing WhatsApp communication patterns while au
 
 ## 🚀 **Solution Overview**
 
-WAI is a **Multi-Context AI Assistant** that operates across three primary use cases:
+Wenie is a **Multi-Context AI Assistant** that operates across three primary use cases:
 
 ### **Core Value Proposition**
 - **🧠 Context Intelligence**: Understands conversation patterns and automatically suggests relevant actions
@@ -60,7 +60,7 @@ WAI is a **Multi-Context AI Assistant** that operates across three primary use c
 Team Member: "Anyone free for lunch today?"
 Another: "I'm thinking Italian or Thai?"
 Third: "What time works for everyone?"
-→ WAI detects coordination pattern
+→ Wenie detects coordination pattern
 → Suggests: Create restaurant poll, Find common time
 → Integrates with Calendly for scheduling
 ```
@@ -78,7 +78,7 @@ Third: "What time works for everyone?"
 ```
 Team Lead: "Let's do our async standup. Voice notes welcome!"
 Developers share voice updates about progress and blockers
-→ WAI processes voice notes and text updates
+→ Wenie processes voice notes and text updates
 → Generates structured standup summary
 → Integrates with Jira for ticket creation
 → Shares formatted report to Slack channels
@@ -97,7 +97,7 @@ Developers share voice updates about progress and blockers
 ```
 Manager: "Need weekend roster for Dec 21-22. Share availability!"
 Staff share casual availability messages
-→ WAI analyzes availability patterns
+→ Wenie analyzes availability patterns
 → Generates optimal roster with gap detection
 → Integrates with scheduling tools for distribution
 ```
@@ -206,19 +206,19 @@ Staff share casual availability messages
 - **Role**: Senior Developer / Team Lead
 - **Pain Points**: Spends hours consolidating standup information, tracking blockers manually
 - **Goals**: Streamline team communication, provide clear status to management
-- **WAI Value**: Automated standup summaries, Jira integration, executive reporting
+- **Wenie Value**: Automated standup summaries, Jira integration, executive reporting
 
 #### **👤 Maria - Restaurant Manager**  
 - **Role**: Operations Manager, Small Business
 - **Pain Points**: Staff scheduling chaos, coverage gaps, manual coordination
 - **Goals**: Optimize staff schedules, reduce scheduling conflicts, improve communication
-- **WAI Value**: Smart roster generation, availability parsing, gap detection
+- **Wenie Value**: Smart roster generation, availability parsing, gap detection
 
 #### **👤 David - Remote Team Coordinator**
 - **Role**: Project Manager, Distributed Team
 - **Pain Points**: Timezone coordination, decision fatigue, tool fragmentation  
 - **Goals**: Streamline group decisions, reduce meeting overhead, improve async collaboration
-- **WAI Value**: Smart polling, consensus building, multi-timezone scheduling
+- **Wenie Value**: Smart polling, consensus building, multi-timezone scheduling
 
 ---
 
@@ -375,11 +375,11 @@ Staff share casual availability messages
 
 ## 📋 **Conclusion**
 
-WAI represents a paradigm shift in how teams can leverage AI to enhance their natural communication patterns. By focusing on WhatsApp - the world's most popular messaging platform - and providing intelligent, context-aware suggestions that seamlessly integrate with enterprise tools, WAI bridges the critical gap between informal team communication and formal business processes.
+Wenie represents a paradigm shift in how teams can leverage AI to enhance their natural communication patterns. By focusing on WhatsApp - the world's most popular messaging platform - and providing intelligent, context-aware suggestions that seamlessly integrate with enterprise tools, Wenie bridges the critical gap between informal team communication and formal business processes.
 
-The multi-context approach (Social, Corporate, SME) ensures broad market applicability while the deep enterprise integrations provide immediate, tangible value. With a clear roadmap from MVP to scale, strong competitive positioning, and a proven user experience prototype, WAI is positioned to capture significant market share in the rapidly growing AI-powered productivity space.
+The multi-context approach (Social, Corporate, SME) ensures broad market applicability while the deep enterprise integrations provide immediate, tangible value. With a clear roadmap from MVP to scale, strong competitive positioning, and a proven user experience prototype, Wenie is positioned to capture significant market share in the rapidly growing AI-powered productivity space.
 
-**The future of work communication is conversational, intelligent, and seamlessly integrated - and WAI makes that future available today.**
+**The future of work communication is conversational, intelligent, and seamlessly integrated - and Wenie makes that future available today.**
 
 ---
 

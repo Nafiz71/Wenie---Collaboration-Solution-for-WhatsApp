@@ -108,7 +108,7 @@ Wenie is WhatsApp's intelligent collaboration layer that seamlessly transforms g
 ```
 /
 ├── eh.html                          # Main demo application
-├── WAI_Product_Requirements_Document.md    # Comprehensive PRD
+├── Wenie_Product_Requirements_Document.md    # Comprehensive PRD
 ├── WhatsApp_icon.png               # WhatsApp branding assets
 ├── ehpng.png                       # Company logo
 └── README.md                       # This file

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WAI - Multi-Context WhatsApp AI Assistant</title>
+    <title>Wenie - WhatsApp AI Collaborative Assistant</title>
     <style>
         * {
             margin: 0;
@@ -1667,7 +1667,7 @@
                 <img src="ehpng.png" alt="EH Logo" class="banner-logo" onerror="this.style.display='none'; this.previousElementSibling.style.display='flex'">
             </div>
             <div class="banner-text">
-                <div class="banner-title">WAI - Multi-Context AI Assistant</div>
+                <div class="banner-title">Wenie - WhatsApp AI Collaborative Assistant</div>
                 <div class="banner-subtitle">Experience intelligent WhatsApp AI that adapts to social and corporate contexts</div>
             </div>
             <div class="banner-actions">
@@ -1687,8 +1687,8 @@
         </div>
     </div>
     <div class="demo-info">
-        <h2>🤖 WAI Multi-Context Demo</h2>
-        <p><strong>See WAI adapt to different scenarios:</strong> <span class="highlight">Social coordination</span> and <span class="highlight">Corporate productivity</span>.</p>
+        <h2>🤖 Wenie Multi-Context Demo</h2>
+        <p><strong>See Wenie adapt to different scenarios:</strong> <span class="highlight">Social coordination</span> and <span class="highlight">Corporate productivity</span>.</p>
         
         <div class="scenario-switcher">
             <button class="scenario-btn active" onclick="switchScenario('social')" id="socialBtn">👥 Social</button>
@@ -1697,17 +1697,17 @@
         </div>
         
         <div id="socialDescription">
-            <p><strong>Social Scenario:</strong> Friends coordinating lunch with conflicting preferences and time constraints. <span class="highlight">WAI analyzes conversation patterns</span> and facilitates group decisions.</p>
+            <p><strong>Social Scenario:</strong> Friends coordinating lunch with conflicting preferences and time constraints. <span class="highlight">Wenie analyzes conversation patterns</span> and facilitates group decisions.</p>
             <p><strong>Innovation:</strong> Group chat chaos → AI pattern recognition → Smart recommendations → <span class="highlight">Instant consensus</span></p>
         </div>
         
         <div id="corporateDescription" class="hidden">
-            <p><strong>Corporate Scenario:</strong> Team doing async standup via voice notes. <span class="highlight">WAI replaces 30-60min Zoom meetings</span> with smart summaries.</p>
+            <p><strong>Corporate Scenario:</strong> Team doing async standup via voice notes. <span class="highlight">Wenie replaces 30-60min Zoom meetings</span> with smart summaries.</p>
             <p><strong>Innovation:</strong> Voice notes → AI analysis → Structured standup report for managers.</p>
         </div>
         
         <div id="businessDescription" class="hidden">
-            <p><strong>SME Scenario:</strong> Restaurant staff sharing availability via casual messages. <span class="highlight">WAI transforms chaos into organized rosters</span>.</p>
+            <p><strong>SME Scenario:</strong> Restaurant staff sharing availability via casual messages. <span class="highlight">Wenie transforms chaos into organized rosters</span>.</p>
             <p><strong>Innovation:</strong> Casual availability texts → AI analysis → Smart rostering with gap detection.</p>
         </div>
         
@@ -1828,7 +1828,7 @@
             oscillator.stop(audioContext.currentTime + 0.03);
         }
         
-        // WAI processing sound
+        // Wenie processing sound
         function playWAIProcessingSound() {
             if (!audioContext || isMuted) return;
             
@@ -1944,7 +1944,7 @@
                     },
                     {
                         type: 'wai-thinking',
-                        text: 'WAI analyzing group coordination patterns and preferences...',
+                        text: 'Wenie analyzing group coordination patterns and preferences...',
                         delay: 2000
                     },
                     {
@@ -2007,7 +2007,7 @@
                     },
                     {
                         type: 'wai-thinking',
-                        text: 'WAI processing standup updates and voice transcriptions...',
+                        text: 'Wenie processing standup updates and voice transcriptions...',
                         delay: 2500
                     },
                     {
@@ -2068,7 +2068,7 @@
                     },
                     {
                         type: 'wai-thinking',
-                        text: 'WAI analyzing staff availability and shift requirements...',
+                        text: 'Wenie analyzing staff availability and shift requirements...',
                         delay: 2000
                     },
                     {
@@ -2157,7 +2157,7 @@
             const scenario = scenarios[currentScenario];
             
             if (demoStep >= scenario.flow.length) {
-                document.getElementById('stepIndicator').textContent = 'Demo complete! WAI is ready to assist.';
+                document.getElementById('stepIndicator').textContent = 'Demo complete! Wenie is ready to assist.';
                 isRunning = false;
                 return;
             }
@@ -2240,10 +2240,10 @@
             chatContent.appendChild(thinkingDiv);
             scrollToBottom();
             
-            // Play WAI processing sound
+            // Play Wenie processing sound
             setTimeout(() => playWAIProcessingSound(), 200);
             
-            document.getElementById('stepIndicator').textContent = 'WAI is analyzing the conversation...';
+            document.getElementById('stepIndicator').textContent = 'Wenie is analyzing the conversation...';
             
             setTimeout(() => {
                 if (thinkingDiv.parentNode) {
@@ -2278,7 +2278,7 @@
             chatContent.appendChild(suggestionDiv);
             scrollToBottom();
             
-            document.getElementById('stepIndicator').textContent = 'WAI has suggestions! Click to interact.';
+            document.getElementById('stepIndicator').textContent = 'Wenie has suggestions! Click to interact.';
         }
         
         function handleSuggestion(action) {
@@ -2644,7 +2644,7 @@
                 document.getElementById('stepIndicator').textContent = '📱 Coverage requests sent! Tracking responses...';
                 
             } else if (action === 'dismiss') {
-                document.getElementById('stepIndicator').textContent = 'WAI dismissed. Always ready when you need help!';
+                document.getElementById('stepIndicator').textContent = 'Wenie dismissed. Always ready when you need help!';
             }
             
             // Fade out the suggestion after interaction
@@ -2731,7 +2731,7 @@
                 response1.innerHTML = `
                     <div class="message-bubble">
                         <div class="sender-name david">David</div>
-                        <div class="message-text">Perfect! WAI nailed it 😎 That was so much easier than going back and forth</div>
+                        <div class="message-text">Perfect! Wenie nailed it 😎 That was so much easier than going back and forth</div>
                         <div class="message-time">${getCurrentTime()}</div>
                     </div>
                 `;
@@ -2789,7 +2789,7 @@
             `;
             chatContent.appendChild(finalBooking);
             scrollToBottom();
-            document.getElementById('stepIndicator').textContent = '🍽️ Perfect coordination! WAI turned chaos into clear action.';
+            document.getElementById('stepIndicator').textContent = '🍽️ Perfect coordination! Wenie turned chaos into clear action.';
         }
         
         function resetDemo() {
@@ -2846,7 +2846,7 @@
         }
         
         function manualWAI() {
-            document.getElementById('stepIndicator').textContent = 'WAI Assistant activated manually!';
+            document.getElementById('stepIndicator').textContent = 'Wenie Assistant activated manually!';
         }
         
         function playVoiceNote(sender) {
@@ -2965,7 +2965,7 @@
                     <div class="tool-body">
                         ${featuresHTML}
                         <div class="integration-badge">
-                            🔗 Integrated with WAI Assistant
+                            🔗 Integrated with Wenie Assistant
                         </div>
                     </div>
                     <div class="tool-actions">
