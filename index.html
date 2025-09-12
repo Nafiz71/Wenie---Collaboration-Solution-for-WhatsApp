@@ -11,6 +11,22 @@
             box-sizing: border-box;
         }
         
+        /* Page load animation */
+        @keyframes pageSlideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+        
+        .demo-info, .phone-container {
+            animation: pageSlideIn 0.6s ease-out;
+        }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: radial-gradient(125% 125% at 50% 0%, #020617 50%, #25D366);
@@ -25,6 +41,7 @@
             position: relative;
             overflow-x: hidden;
             animation: auroraShift 8s ease-in-out infinite alternate;
+            transition: all 0.3s ease;
         }
         
         @keyframes auroraShift {
@@ -212,6 +229,28 @@
         .banner-btn:hover {
             background: rgba(255,255,255,0.3);
             transform: translateY(-1px);
+        }
+        
+        /* Purple color for info buttons */
+        .banner-btn.info {
+            background: rgba(206, 132, 207, 0.3);
+            border-color: rgba(206, 132, 207, 0.4);
+        }
+        
+        .banner-btn.info:hover {
+            background: rgba(206, 132, 207, 0.4);
+            border-color: rgba(206, 132, 207, 0.5);
+        }
+        
+        /* Green color for demo buttons */
+        .banner-btn.demo {
+            background: rgba(37, 211, 102, 0.3);
+            border-color: rgba(37, 211, 102, 0.4);
+        }
+        
+        .banner-btn.demo:hover {
+            background: rgba(37, 211, 102, 0.4);
+            border-color: rgba(37, 211, 102, 0.5);
         }
         
         .banner-close {
@@ -1635,10 +1674,10 @@
                 <button class="banner-btn" onclick="initAudio(); toggleMute()" id="muteBtn" title="Toggle sounds">
                     🔊
                 </button>
-                <button class="banner-btn" onclick="showLandingPage()">
+                <button class="banner-btn info" onclick="showLandingPage()">
                     📖 About Wenie
                 </button>
-                <a href="#demo" class="banner-btn" onclick="startDemo()">
+                <a href="eh.html" class="banner-btn demo">
                     ▶️ Try Demo
                 </a>
             </div>
@@ -1658,7 +1697,8 @@
         </div>
         
         <div id="socialDescription">
-            <p><strong>Social Scenario:</strong> Friends coordinating lunch plans. WAI detects preferences and suggests polls/scheduling.</p>
+            <p><strong>Social Scenario:</strong> Friends coordinating lunch with conflicting preferences and time constraints. <span class="highlight">WAI analyzes conversation patterns</span> and facilitates group decisions.</p>
+            <p><strong>Innovation:</strong> Group chat chaos → AI pattern recognition → Smart recommendations → <span class="highlight">Instant consensus</span></p>
         </div>
         
         <div id="corporateDescription" class="hidden">
@@ -1672,7 +1712,7 @@
         </div>
         
         <div class="demo-controls">
-            <button class="demo-btn" onclick="startDemo()" id="startBtn">▶️ Start Demo</button>
+            <a href="eh.html" class="demo-btn" style="text-decoration: none; display: block; text-align: center; background: #25D366; color: white;">▶️ Start Demo</a>
             <button class="demo-btn" onclick="showLandingPage()" style="background: #CE84CF; margin-top: 10px;">📖 Learn More About Wenie</button>
             <div class="step-indicator" id="stepIndicator">Ready to begin</div>
             <button class="demo-btn" onclick="resetDemo()">🔄 Reset Demo</button>
@@ -1871,32 +1911,54 @@
                         type: 'message',
                         sender: 'charlie',
                         senderName: 'Charlie', 
-                        text: "Thai sounds good! But what time works for everyone?",
+                        text: "Thai sounds amazing! But what time works for everyone? I'm free after 1:30 PM",
                         delay: 1500
                     },
                     {
                         type: 'message',
                         sender: 'david',
                         senderName: 'David',
-                        text: "I have a meeting until 1 PM, so any time after that works",
+                        text: "I have a meeting until 1:15 PM, so any time after 1:30 works. But I'm not a fan of Thai - how about Italian or burgers?",
                         delay: 2000
+                    },
+                    {
+                        type: 'message',
+                        sender: 'alice',
+                        senderName: 'Alice',
+                        text: "Hmm, seems like we have different preferences! I'm flexible on food but need to be back by 2:30 PM for a client call.",
+                        delay: 1800
+                    },
+                    {
+                        type: 'message',
+                        sender: 'bob',
+                        senderName: 'Bob',
+                        text: "This is getting complicated 😅 Maybe we should just pick something nearby? What about that new place on 5th Street?",
+                        delay: 2200
+                    },
+                    {
+                        type: 'message',
+                        sender: 'charlie',
+                        senderName: 'Charlie',
+                        text: "Which place on 5th? There's like 4 restaurants there! And I really don't want to rush lunch...",
+                        delay: 1600
                     },
                     {
                         type: 'wai-thinking',
-                        text: 'WAI analyzing group coordination patterns...',
-                        delay: 1500
+                        text: 'WAI analyzing group coordination patterns and preferences...',
+                        delay: 2000
                     },
                     {
                         type: 'wai-suggestion',
-                        title: 'Group Planning Detected',
-                        analysis: 'I notice you\'re coordinating lunch with multiple preferences and scheduling constraints.',
-                        insight: '📊 Detected: Location preferences (2), Time constraints (1), Group consensus needed',
+                        title: 'Group Coordination Challenge Detected',
+                        analysis: 'I notice multiple preferences, time constraints, and decision fatigue setting in. This is a perfect moment for AI-driven coordination.',
+                        insight: '🎯 Analysis: 3 cuisine preferences, 2 time constraints, 1 location suggestion, Group consensus difficulty detected',
                         suggestions: [
-                            { text: '🗳️ Create Restaurant Poll', action: 'poll', primary: true },
-                            { text: '📅 Find Common Time', action: 'schedule' },
-                            { text: '✋ Not now', action: 'dismiss' }
+                            { text: '🗳️ Smart Restaurant Poll', action: 'smart-poll', primary: true },
+                            { text: '📅 Optimal Time Finder', action: 'time-finder' },
+                            { text: '🎯 Quick Decision Assistant', action: 'decision-maker' },
+                            { text: '✋ Let them decide', action: 'dismiss' }
                         ],
-                        delay: 2000
+                        delay: 2500
                     }
                 ]
             },
@@ -2224,7 +2286,104 @@
             
             // No sound for suggestion clicks - only during generation
             
-            if (action === 'poll') {
+            // Enhanced Social Scenario Actions
+            if (action === 'smart-poll') {
+                // Advanced restaurant poll with AI recommendations
+                const smartPollResult = document.createElement('div');
+                smartPollResult.className = 'message sent';
+                smartPollResult.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="collaboration-result">
+                            <div class="result-header">
+                                <div class="result-icon">🤖</div>
+                                <div class="result-title">AI-Powered Restaurant Poll</div>
+                            </div>
+                            <div class="result-details">
+                                <strong>🎯 Smart Analysis Complete:</strong><br>
+                                Based on preferences and constraints...<br><br>
+                                🍝 <strong>Bella Italia</strong> (Recommended) - 2 min walk<br>
+                                🍜 <strong>Spice Route Thai</strong> - 4 min walk<br>
+                                🍔 <strong>Corner Burger Co.</strong> - 3 min walk<br><br>
+                                <em>All accommodate 1:30-2:30 PM window</em>
+                            </div>
+                            <div class="result-actions">
+                                <button class="result-btn" onclick="simulateVoting()">🗳️ Start Voting</button>
+                                <button class="result-btn" onclick="openTool('calendly')">📍 View Locations</button>
+                                <button class="result-btn" onclick="openTool('slack')">📤 Share Poll</button>
+                            </div>
+                        </div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                
+                chatContent.appendChild(smartPollResult);
+                document.getElementById('stepIndicator').textContent = '🤖 AI curated restaurants based on group preferences!';
+                
+            } else if (action === 'time-finder') {
+                // Intelligent time optimization
+                const timeResult = document.createElement('div');
+                timeResult.className = 'message sent';
+                timeResult.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="collaboration-result">
+                            <div class="result-header">
+                                <div class="result-icon">⏰</div>
+                                <div class="result-title">Optimal Time Analysis</div>
+                            </div>
+                            <div class="result-details">
+                                <strong>🎯 Perfect Window Found:</strong><br><br>
+                                <strong>1:30 PM - 2:15 PM</strong> ✅<br>
+                                • David free after 1:15 PM ✓<br>
+                                • Alice back by 2:30 PM ✓<br>
+                                • 45 min lunch duration ✓<br>
+                                • All team members available ✓
+                            </div>
+                            <div class="result-actions">
+                                <button class="result-btn" onclick="finalizeDecision()">📅 Book This Time</button>
+                                <button class="result-btn" onclick="openTool('calendly')">🔄 Alternative Times</button>
+                            </div>
+                        </div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                
+                chatContent.appendChild(timeResult);
+                document.getElementById('stepIndicator').textContent = '⏰ Perfect lunch window identified!';
+                
+            } else if (action === 'decision-maker') {
+                // AI decision assistant that simulates group consensus
+                const decisionResult = document.createElement('div');
+                decisionResult.className = 'message sent';
+                decisionResult.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="collaboration-result">
+                            <div class="result-header">
+                                <div class="result-icon">🎯</div>
+                                <div class="result-title">AI Group Decision</div>
+                            </div>
+                            <div class="result-details">
+                                <strong>🧠 Analysis-Driven Recommendation:</strong><br><br>
+                                <strong>📍 Bella Italia, 1:30 PM</strong><br><br>
+                                <em>Rationale:</em><br>
+                                • Closest to office (2 min walk)<br>
+                                • Accommodates dietary preferences<br>
+                                • Fits everyone's time constraints<br>
+                                • Fast service for tight schedule
+                            </div>
+                            <div class="result-actions">
+                                <button class="result-btn" onclick="simulateGroupResponse()">✅ Approve Decision</button>
+                                <button class="result-btn" onclick="openTool('calendly')">📅 Make Reservation</button>
+                                <button class="result-btn" onclick="openTool('slack')">📢 Notify Team</button>
+                            </div>
+                        </div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                
+                chatContent.appendChild(decisionResult);
+                document.getElementById('stepIndicator').textContent = '🎯 AI made optimal group decision!';
+                
+            } else if (action === 'poll') {
                 // Create restaurant poll result
                 const pollResult = document.createElement('div');
                 pollResult.className = 'message sent';
@@ -2495,6 +2654,142 @@
             }
             
             scrollToBottom();
+        }
+        
+        // Simulation functions for social scenario demonstration
+        function simulateVoting() {
+            // Simulate team members voting in real-time
+            setTimeout(() => {
+                const chatContent = document.getElementById('chatContent');
+                const voteUpdate = document.createElement('div');
+                voteUpdate.className = 'message received';
+                voteUpdate.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="sender-name bob">Bob</div>
+                        <div class="message-text">Voted for Bella Italia! 🍝</div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                chatContent.appendChild(voteUpdate);
+                scrollToBottom();
+            }, 1000);
+            
+            setTimeout(() => {
+                const chatContent = document.getElementById('chatContent');
+                const voteUpdate = document.createElement('div');
+                voteUpdate.className = 'message received';
+                voteUpdate.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="sender-name charlie">Charlie</div>
+                        <div class="message-text">Bella Italia works for me too! Quick and close 😊</div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                chatContent.appendChild(voteUpdate);
+                scrollToBottom();
+            }, 2000);
+            
+            setTimeout(() => {
+                const chatContent = document.getElementById('chatContent');
+                const finalResult = document.createElement('div');
+                finalResult.className = 'message sent';
+                finalResult.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="collaboration-result">
+                            <div class="result-header">
+                                <div class="result-icon">✅</div>
+                                <div class="result-title">Group Decision Finalized</div>
+                            </div>
+                            <div class="result-details">
+                                <strong>🎉 Consensus Reached!</strong><br><br>
+                                <strong>🍝 Bella Italia - 1:30 PM</strong><br>
+                                4/4 team members agreed<br><br>
+                                📋 Reservation confirmed<br>
+                                📅 Calendar invites sent<br>
+                                📍 Directions shared
+                            </div>
+                            <div class="result-actions">
+                                <button class="result-btn" onclick="openTool('calendly')">📅 View in Calendar</button>
+                                <button class="result-btn" onclick="openTool('slack')">📢 Share Details</button>
+                            </div>
+                        </div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                chatContent.appendChild(finalResult);
+                scrollToBottom();
+                document.getElementById('stepIndicator').textContent = '🎉 Perfect! AI facilitated group decision in 30 seconds!';
+            }, 3500);
+        }
+        
+        function simulateGroupResponse() {
+            // Simulate enthusiastic team response to AI decision
+            setTimeout(() => {
+                const chatContent = document.getElementById('chatContent');
+                const response1 = document.createElement('div');
+                response1.className = 'message received';
+                response1.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="sender-name david">David</div>
+                        <div class="message-text">Perfect! WAI nailed it 😎 That was so much easier than going back and forth</div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                chatContent.appendChild(response1);
+                scrollToBottom();
+            }, 1200);
+            
+            setTimeout(() => {
+                const chatContent = document.getElementById('chatContent');
+                const response2 = document.createElement('div');
+                response2.className = 'message received';
+                response2.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="sender-name alice">Alice</div>
+                        <div class="message-text">Agreed! See you all at Bella Italia at 1:30 🍽️</div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                chatContent.appendChild(response2);
+                scrollToBottom();
+            }, 2000);
+            
+            setTimeout(() => {
+                document.getElementById('stepIndicator').textContent = '🎆 Social coordination complete! AI saved 10+ minutes of back-and-forth.';
+            }, 2500);
+        }
+        
+        function finalizeDecision() {
+            // Show final booking confirmation
+            const chatContent = document.getElementById('chatContent');
+            const finalBooking = document.createElement('div');
+            finalBooking.className = 'message sent';
+            finalBooking.innerHTML = `
+                <div class="message-bubble">
+                    <div class="collaboration-result">
+                        <div class="result-header">
+                            <div class="result-icon">📅</div>
+                            <div class="result-title">Lunch Coordination Complete</div>
+                        </div>
+                        <div class="result-details">
+                            <strong>🎆 All Set!</strong><br><br>
+                            🕰️ <strong>Time:</strong> 1:30 PM - 2:15 PM<br>
+                            🍝 <strong>Place:</strong> Bella Italia<br>
+                            👥 <strong>Group:</strong> 4 people confirmed<br>
+                            📋 <strong>Table:</strong> Reserved for 4<br><br>
+                            <em>Calendar invites sent to all participants</em>
+                        </div>
+                        <div class="result-actions">
+                            <button class="result-btn" onclick="openTool('calendly')">📍 Get Directions</button>
+                            <button class="result-btn" onclick="openTool('slack')">📞 Call Restaurant</button>
+                        </div>
+                    </div>
+                    <div class="message-time">${getCurrentTime()}</div>
+                </div>
+            `;
+            chatContent.appendChild(finalBooking);
+            scrollToBottom();
+            document.getElementById('stepIndicator').textContent = '🍽️ Perfect coordination! WAI turned chaos into clear action.';
         }
         
         function resetDemo() {
