@@ -1,0 +1,2741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAI - Multi-Context WhatsApp AI Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: radial-gradient(125% 125% at 50% 0%, #020617 50%, #25D366);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            gap: 30px;
+            padding-top: 100px;
+            position: relative;
+            overflow-x: hidden;
+            animation: auroraShift 8s ease-in-out infinite alternate;
+        }
+        
+        @keyframes auroraShift {
+            0% {
+                background: radial-gradient(125% 125% at 50% 0%, #020617 50%, #25D366);
+            }
+            50% {
+                background: radial-gradient(125% 125% at 50% 0%, #020617 50%, #128C7E);
+            }
+            100% {
+                background: radial-gradient(125% 125% at 50% 0%, #020617 50%, #CE84CF);
+            }
+        }
+        
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.3), transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.2), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.4), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.3), transparent),
+                radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.2), transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: sparkle 20s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        @keyframes sparkle {
+            0% {
+                transform: translateY(0px);
+            }
+            100% {
+                transform: translateY(-100px);
+            }
+        }
+        
+        .top-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(13, 119, 55, 0.95) 0%, rgba(5, 107, 47, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(19, 255, 170, 0.3);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            box-shadow: 0 4px 32px rgba(19, 255, 170, 0.2);
+            animation: bannerGlow 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes bannerGlow {
+            0% {
+                box-shadow: 0 4px 32px rgba(19, 255, 170, 0.2);
+            }
+            100% {
+                box-shadow: 0 4px 32px rgba(19, 255, 170, 0.4);
+            }
+        }
+        
+        .banner-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .banner-logos {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .whatsapp-icon {
+            height: 45px;
+            width: 45px;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .whatsapp-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .whatsapp-placeholder {
+            display: none;
+            height: 45px;
+            width: 45px;
+            background: #25D366;
+            border-radius: 8px;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+        
+        .whatsapp-placeholder:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .eh-placeholder {
+            display: none;
+            height: 50px;
+            min-width: 60px;
+            background: white;
+            border-radius: 8px;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: #128C7E;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            padding: 0 10px;
+        }
+        
+        .eh-placeholder:hover {
+            transform: scale(1.05);
+        }
+        
+        .banner-logo {
+            height: 50px;
+            width: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            background: white;
+            padding: 5px;
+        }
+        
+        .banner-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .banner-text {
+            flex: 1;
+            color: white;
+        }
+        
+        .banner-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .banner-subtitle {
+            font-size: 13px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        .banner-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .banner-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .banner-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+        
+        .banner-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        
+        .banner-close:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+        
+        .demo-info {
+            max-width: 350px;
+            color: white;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 10;
+            animation: cardFloat 6s ease-in-out infinite alternate;
+        }
+        
+        @keyframes cardFloat {
+            0% {
+                transform: translateY(0px) scale(1);
+                box-shadow: 
+                    0 8px 32px rgba(0, 0, 0, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            }
+            100% {
+                transform: translateY(-10px) scale(1.02);
+                box-shadow: 
+                    0 20px 40px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            }
+        }
+        
+        .demo-info h2 {
+            color: #128C7E;
+            margin-bottom: 15px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .demo-info p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            opacity: 0.9;
+        }
+        
+        .demo-info .highlight {
+            color: #25D366;
+            font-weight: 600;
+        }
+        
+        .scenario-switcher {
+            display: flex;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        
+        .scenario-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            color: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 700;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scenario-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .scenario-btn:hover::before {
+            left: 100%;
+        }
+        
+        .scenario-btn.active {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            font-weight: 800;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 
+                0 8px 25px rgba(37, 211, 102, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        .scenario-btn:hover {
+            transform: translateY(-1px) scale(1.02);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .demo-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .demo-btn {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .demo-btn:hover {
+            background: #128C7E;
+            transform: translateY(-1px);
+        }
+        
+        .demo-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .step-indicator {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+        
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: linear-gradient(145deg, #1a1a1a, #000);
+            border-radius: 40px;
+            padding: 8px;
+            box-shadow: 
+                0 20px 60px rgba(0,0,0,0.5),
+                0 0 0 1px rgba(19, 255, 170, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 10;
+            animation: phoneGlow 8s ease-in-out infinite alternate;
+        }
+        
+        @keyframes phoneGlow {
+            0% {
+                box-shadow: 
+                    0 20px 60px rgba(0,0,0,0.5),
+                    0 0 0 1px rgba(19, 255, 170, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            }
+            100% {
+                box-shadow: 
+                    0 25px 80px rgba(0,0,0,0.6),
+                    0 0 0 1px rgba(19, 255, 170, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                    0 0 20px rgba(19, 255, 170, 0.1);
+            }
+        }
+        
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #111b21;
+            border-radius: 32px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .chat-header {
+            background: #202c33;
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid #2a3942;
+        }
+        
+        .back-btn {
+            color: #25D366;
+            font-size: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .group-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+        
+        .group-avatar.social {
+            background: linear-gradient(135deg, #ff9a56, #ffad56);
+        }
+        
+        .group-avatar.corporate {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .group-avatar.business {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+        }
+        
+        .group-info h3 {
+            color: #e9edef;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .group-info p {
+            color: #8696a0;
+            font-size: 13px;
+            margin-top: 1px;
+        }
+        
+        .chat-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 16px 20px;
+            background: #0b141a;
+        }
+        
+        .message {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-end;
+            animation: messageSlide 0.3s ease-out;
+        }
+        
+        @keyframes messageSlide {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .message.sent {
+            justify-content: flex-end;
+        }
+        
+        .message-bubble {
+            max-width: 270px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            position: relative;
+            word-wrap: break-word;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .message.received .message-bubble {
+            background: #202c33;
+            color: #e9edef;
+            border-bottom-left-radius: 4px;
+        }
+        
+        .message.sent .message-bubble {
+            background: #005c4b;
+            color: #e9edef;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .sender-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        /* Social scenario colors */
+        .sender-name.alice { color: #ff6b9d; }
+        .sender-name.bob { color: #4ecdc4; }
+        .sender-name.charlie { color: #ffe66d; }
+        .sender-name.david { color: #a8e6cf; }
+        
+        /* Corporate scenario colors */
+        .sender-name.sarah { color: #ff9ff3; }
+        .sender-name.mike { color: #54a0ff; }
+        .sender-name.emma { color: #5f27cd; }
+        .sender-name.alex { color: #00d2d3; }
+        .sender-name.lisa { color: #ff6b6b; }
+        
+        /* Business scenario colors */
+        .sender-name.maria { color: #ff6b35; }
+        .sender-name.james { color: #4ecdc4; }
+        .sender-name.sophie { color: #ffe66d; }
+        .sender-name.carlos { color: #a8e6cf; }
+        .sender-name.nina { color: #ff9ff3; }
+        
+        .message-text {
+            font-size: 14.5px;
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+        
+        .message-time {
+            font-size: 11px;
+            color: #8696a0;
+            text-align: right;
+            margin-top: 2px;
+        }
+        
+        .voice-note {
+            background: #2a3942;
+            border-radius: 20px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 4px 0;
+            max-width: 240px;
+        }
+        
+        .voice-play-btn {
+            background: #25D366;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .voice-waveform {
+            flex: 1;
+            height: 20px;
+            background: linear-gradient(90deg, #25D366 0%, #25D366 60%, #8696a0 60%, #8696a0 100%);
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .voice-duration {
+            font-size: 11px;
+            color: #8696a0;
+        }
+        
+        .wai-thinking {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            margin: 8px 0;
+            background: rgba(37, 211, 102, 0.1);
+            border-radius: 12px;
+            color: #128C7E;
+            font-size: 13px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        .wai-suggestion {
+            background: linear-gradient(135deg, #128C7E, #25D366);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 12px 0;
+            color: white;
+            animation: waiSlideIn 0.5s ease-out;
+            box-shadow: 
+                0 8px 32px rgba(37, 211, 102, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            max-width: 350px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .wai-suggestion::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            border-radius: 16px;
+            pointer-events: none;
+        }
+        
+        @keyframes waiSlideIn {
+            from { 
+                transform: translateY(30px) scale(0.95); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
+        }
+        
+        .wai-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .wai-avatar {
+            width: 34px;
+            height: 34px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 14px;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .wai-content {
+            flex: 1;
+        }
+        
+        .wai-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+        
+        .wai-analysis {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+        
+        .wai-insight {
+            background: rgba(255,255,255,0.1);
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            border-left: 3px solid rgba(255,255,255,0.3);
+            line-height: 1.4;
+        }
+        
+        .suggestion-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .suggestion-btn {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: white;
+            padding: 11px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .suggestion-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .suggestion-btn.primary {
+            background: rgba(255,255,255,0.9);
+            color: #128C7E;
+            font-weight: 600;
+        }
+        
+        .suggestion-btn.primary:hover {
+            background: white;
+        }
+        
+        .standup-summary {
+            background: linear-gradient(135deg, #128C7E, #25D366);
+            border-radius: 14px;
+            padding: 20px;
+            margin: 12px 0;
+            color: white;
+            max-width: 340px;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+        
+        .summary-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .summary-icon {
+            font-size: 22px;
+            margin-right: 14px;
+        }
+        
+        .summary-title {
+            font-weight: 600;
+            font-size: 17px;
+        }
+        
+        .summary-date {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
+        
+        .team-updates {
+            margin-bottom: 18px;
+        }
+        
+        .team-member {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .member-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        
+        .update-item {
+            font-size: 13px;
+            margin: 4px 0;
+            padding-left: 8px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+        
+        .update-yesterday { color: #a8e6cf; }
+        .update-today { color: #ffd93d; }
+        .update-blockers { color: #ff6b6b; }
+        
+        .summary-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .summary-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        
+        .summary-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .collaboration-result {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 14px;
+            padding: 18px;
+            margin: 10px 0;
+            color: white;
+            max-width: 320px;
+            box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
+        }
+        
+        .result-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        
+        .result-icon {
+            font-size: 22px;
+            margin-right: 12px;
+        }
+        
+        .result-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .result-details {
+            font-size: 14px;
+            margin-bottom: 16px;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .result-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        
+        .result-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+        
+        /* Tool Integration Modal */
+        .tool-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from { 
+                opacity: 0;
+                backdrop-filter: blur(0px);
+            }
+            to { 
+                opacity: 1;
+                backdrop-filter: blur(10px);
+            }
+        }
+        
+        .tool-content {
+            background: linear-gradient(135deg, #128C7E, #25D366);
+            border-radius: 24px;
+            padding: 35px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: white;
+            box-shadow: 
+                0 25px 80px rgba(0,0,0,0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        
+        .tool-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            border-radius: 24px;
+            pointer-events: none;
+        }
+        
+        @keyframes modalSlideIn {
+            from { transform: scale(0.9) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        
+        @keyframes modalSlideOut {
+            from { transform: scale(1) translateY(0); opacity: 1; }
+            to { transform: scale(0.9) translateY(20px); opacity: 0; }
+        }
+        
+        .tool-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 20px;
+        }
+        
+        .tool-icon {
+            font-size: 32px;
+            margin-right: 15px;
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 50%;
+        }
+        
+        .tool-title {
+            flex: 1;
+        }
+        
+        .tool-title h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .tool-subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .tool-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+        
+        .tool-close:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+        
+        .tool-body {
+            margin-bottom: 25px;
+        }
+        
+        .tool-feature {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 15px;
+            border-left: 4px solid rgba(255,255,255,0.3);
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .feature-desc {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        .tool-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .tool-btn {
+            background: rgba(255,255,255,0.9);
+            color: #128C7E;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .tool-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .tool-btn.secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .tool-btn.secondary:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        /* Landing Page Styles */
+        .landing-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(125% 125% at 50% 0%, #020617 50%, #25D366);
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            animation: auroraShift 8s ease-in-out infinite alternate;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease;
+        }
+        
+        .landing-page.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .landing-header {
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .landing-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .landing-logo img {
+            height: 60px;
+            width: 60px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(37, 211, 102, 0.3);
+        }
+        
+        .landing-title {
+            background: linear-gradient(135deg, #ffffff, #25D366, #CE84CF);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: titlePulse 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titlePulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.02); }
+        }
+        
+        .landing-subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .landing-content {
+            flex: 1;
+            padding: 0 20px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: left 0.6s;
+        }
+        
+        .feature-card:hover::before {
+            left: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .feature-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        
+        .feature-description {
+            color: rgba(255,255,255,0.8);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .feature-benefits {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-benefits li {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .feature-benefits li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #25D366;
+            font-weight: bold;
+        }
+        
+        .capabilities-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            margin: 40px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .capabilities-title {
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .capability-item {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid #CE84CF;
+            transition: all 0.3s ease;
+        }
+        
+        .capability-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        .capability-name {
+            color: #CE84CF;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .capability-desc {
+            color: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .cta-section {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 8px 32px rgba(37, 211, 102, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 15px 40px rgba(37, 211, 102, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .privacy-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(206, 132, 207, 0.2);
+            color: #CE84CF;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 20px;
+            border: 1px solid rgba(206, 132, 207, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .landing-title {
+                font-size: 2.5rem;
+            }
+            
+            .landing-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .feature-card,
+            .capabilities-section {
+                padding: 20px;
+            }
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            color: #8696a0;
+            font-size: 13px;
+            font-style: italic;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+            margin-left: 8px;
+        }
+        
+        .typing-dot {
+            width: 4px;
+            height: 4px;
+            background: #8696a0;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typingBounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            } 40% {
+                transform: scale(1);
+            }
+        }
+        
+        .input-area {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: #202c33;
+            gap: 10px;
+        }
+        
+        .wai-btn {
+            background: linear-gradient(135deg, #128C7E, #25D366);
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+        
+        .wai-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+        }
+        
+        .message-input {
+            flex: 1;
+            background: #2a3942;
+            border: none;
+            color: #e9edef;
+            padding: 12px 16px;
+            border-radius: 22px;
+            font-size: 15px;
+        }
+        
+        .message-input::placeholder {
+            color: #8696a0;
+        }
+        
+        .send-btn {
+            background: #25D366;
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        
+        .send-btn:hover {
+            background: #128C7E;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding: 10px;
+                padding-top: 120px;
+            }
+            
+            .demo-info {
+                order: 2;
+                margin-top: 20px;
+            }
+            
+            .banner-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .banner-logos {
+                justify-content: center;
+                gap: 10px;
+            }
+            
+            .whatsapp-icon {
+                height: 40px;
+                width: 40px;
+            }
+            
+            .banner-logo {
+                height: 45px;
+            }
+            
+            .banner-text {
+                text-align: center;
+            }
+            
+            .banner-title {
+                font-size: 18px;
+            }
+            
+            .banner-subtitle {
+                font-size: 12px;
+            }
+            
+            .banner-actions {
+                justify-content: center;
+            }
+            
+            .top-banner {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div class="landing-page" id="landingPage">
+        <div class="landing-header">
+            <div class="landing-logo">
+                <div class="whatsapp-placeholder">📱</div>
+                <img src="WhatsApp_icon.png" alt="WhatsApp" class="whatsapp-icon" onerror="this.style.display='none'; this.previousElementSibling.style.display='flex'">
+                <div class="eh-placeholder">EH</div>
+                <img src="ehpng.png" alt="EH Logo" class="banner-logo" onerror="this.style.display='none'; this.previousElementSibling.style.display='flex'">
+            </div>
+            <h1 class="landing-title">Wenie AI Assistant</h1>
+            <p class="landing-subtitle">WhatsApp's intelligent collaboration layer that transforms group conversations into coordinated action</p>
+        </div>
+        
+        <div class="landing-content">
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <h3 class="feature-title">Our Solution</h3>
+                    <p class="feature-description">
+                        More than 3 billion people in over 180 countries use WhatsApp to stay in touch with friends and family, anytime and anywhere. Yet when these same groups need to coordinate plans, make decisions, or organize activities, they're forced to leave WhatsApp for external tools. Wenie changes that.
+                    </p>
+                    <ul class="feature-benefits">
+                        <li>No app switching required</li>
+                        <li>Works within existing chat flow</li>
+                        <li>Activates only when needed</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <h3 class="feature-title">Our Mission</h3>
+                    <p class="feature-description">
+                        WhatsApp has revolutionized how people communicate globally. Now, we're extending that mission to collaboration. Wenie ensures that the conversations that matter most can happen seamlessly within WhatsApp.
+                    </p>
+                    <p class="feature-description">
+                        We believe every group conversation has the potential to create meaningful outcomes. Wenie makes that potential a reality by detecting when groups need structure and providing it instantly.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <h3 class="feature-title">Privacy First</h3>
+                    <p class="feature-description">
+                        Your conversations remain private and secure with Wenie's privacy-first approach.
+                    </p>
+                    <ul class="feature-benefits">
+                        <li>Wenie processes patterns, not content</li>
+                        <li>No message storage or sharing</li>
+                        <li>Group admins control activation</li>
+                        <li>Works within WhatsApp's end-to-end encryption</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="capabilities-section">
+                <h2 class="capabilities-title">Three Core Capabilities</h2>
+                
+                <div class="capability-item">
+                    <h4 class="capability-name">📅 Schedule Coordination</h4>
+                    <p class="capability-desc">
+                        When Wenie detects scheduling discussions ("When can everyone meet?"), it automatically creates an availability grid where members tap their free times. Wenie then highlights the best mutual slot and enables one-tap confirmation.
+                    </p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4 class="capability-name">🗳️ Decision Making</h4>
+                    <p class="capability-desc">
+                        For group decisions ("Where should we go?", "Which option is best?"), Wenie transforms scattered suggestions into structured polls with deadlines, ensuring decisions actually get made.
+                    </p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4 class="capability-name">✅ Task Management</h4>
+                    <p class="capability-desc">
+                        When tasks need distribution ("Who can handle this?"), Wenie creates volunteer sign-ups and tracks completion, turning vague responsibilities into clear commitments.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="capabilities-section">
+                <h2 class="capabilities-title">How Wenie Works</h2>
+                
+                <div class="capability-item">
+                    <h4 class="capability-name">🧠 Intelligent Pattern Detection</h4>
+                    <p class="capability-desc">
+                        Wenie monitors conversation patterns using advanced natural language processing to identify moments when groups shift from chatting to coordinating. When detected, Wenie generates context-appropriate interactive interfaces.
+                    </p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4 class="capability-name">💬 Seamless Integration</h4>
+                    <p class="capability-desc">
+                        Wenie appears as a subtle purple-gradient message within your regular chat flow. No new screens, no app switching - just intelligent assistance exactly when you need it.
+                    </p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4 class="capability-name">🌍 Universal Access</h4>
+                    <p class="capability-desc">
+                        Wenie works across all devices and platforms where WhatsApp runs, ensuring no group member is left behind.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cta-section">
+            <button class="cta-button" onclick="startDemo()">
+                🚀 Experience Wenie Demo
+            </button>
+            <div class="privacy-badge">
+                🔒 Privacy-First • End-to-End Encrypted
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Banner -->
+    <div class="top-banner" id="topBanner">
+        <div class="banner-content">
+            <div class="banner-logos">
+                <div class="whatsapp-placeholder">📱</div>
+                <img src="WhatsApp_icon.png" alt="WhatsApp" class="whatsapp-icon" onerror="this.style.display='none'; this.previousElementSibling.style.display='flex'">
+                <div class="eh-placeholder">EH</div>
+                <img src="ehpng.png" alt="EH Logo" class="banner-logo" onerror="this.style.display='none'; this.previousElementSibling.style.display='flex'">
+            </div>
+            <div class="banner-text">
+                <div class="banner-title">WAI - Multi-Context AI Assistant</div>
+                <div class="banner-subtitle">Experience intelligent WhatsApp AI that adapts to social and corporate contexts</div>
+            </div>
+            <div class="banner-actions">
+                <button class="banner-btn" onclick="initAudio(); toggleMute()" id="muteBtn" title="Toggle sounds">
+                    🔊
+                </button>
+                <a href="#demo" class="banner-btn" onclick="startDemo()">
+                    ▶️ Try Demo
+                </a>
+                <a href="#" class="banner-btn">
+                    📖 Learn More
+                </a>
+            </div>
+            <button class="banner-close" onclick="closeBanner()">
+                ×
+            </button>
+        </div>
+    </div>
+    <div class="demo-info">
+        <h2>🤖 WAI Multi-Context Demo</h2>
+        <p><strong>See WAI adapt to different scenarios:</strong> <span class="highlight">Social coordination</span> and <span class="highlight">Corporate productivity</span>.</p>
+        
+        <div class="scenario-switcher">
+            <button class="scenario-btn active" onclick="switchScenario('social')" id="socialBtn">👥 Social</button>
+            <button class="scenario-btn" onclick="switchScenario('corporate')" id="corporateBtn">💼 Corporate</button>
+            <button class="scenario-btn" onclick="switchScenario('business')" id="businessBtn">🏪 SME</button>
+        </div>
+        
+        <div id="socialDescription">
+            <p><strong>Social Scenario:</strong> Friends coordinating lunch plans. WAI detects preferences and suggests polls/scheduling.</p>
+        </div>
+        
+        <div id="corporateDescription" class="hidden">
+            <p><strong>Corporate Scenario:</strong> Team doing async standup via voice notes. <span class="highlight">WAI replaces 30-60min Zoom meetings</span> with smart summaries.</p>
+            <p><strong>Innovation:</strong> Voice notes → AI analysis → Structured standup report for managers.</p>
+        </div>
+        
+        <div id="businessDescription" class="hidden">
+            <p><strong>SME Scenario:</strong> Restaurant staff sharing availability via casual messages. <span class="highlight">WAI transforms chaos into organized rosters</span>.</p>
+            <p><strong>Innovation:</strong> Casual availability texts → AI analysis → Smart rostering with gap detection.</p>
+        </div>
+        
+        <div class="demo-controls">
+            <button class="demo-btn" onclick="startDemo()" id="startBtn">▶️ Start Demo</button>
+            <div class="step-indicator" id="stepIndicator">Ready to begin</div>
+            <button class="demo-btn" onclick="resetDemo()">🔄 Reset Demo</button>
+        </div>
+    </div>
+
+    <div class="phone-container">
+        <div class="screen">
+            <div class="status-bar">
+                <span id="timeDisplay">9:15 AM</span>
+                <span>🔋 85%</span>
+            </div>
+            
+            <div class="chat-header">
+                <div class="back-btn">‹</div>
+                <div class="group-avatar social" id="groupAvatar">👥</div>
+                <div class="group-info">
+                    <h3 id="groupName">Dev Team Lunch</h3>
+                    <p id="groupMembers">Alice, Bob, Charlie, David, You</p>
+                </div>
+            </div>
+            
+            <div class="chat-content" id="chatContent">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+            
+            <div class="input-area">
+                <button class="wai-btn" onclick="manualWAI()">AI</button>
+                <input type="text" class="message-input" placeholder="Type a message...">
+                <button class="send-btn" onclick="sendMessage()">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Audio Context and Sound Effects
+        let audioContext;
+        let backgroundMusic;
+        let isMuted = false;
+        
+        // Initialize audio context
+        function initAudio() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                setupBackgroundMusic();
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+        
+        // Create subtle ambient background music (disabled by default)
+        function setupBackgroundMusic() {
+            // Background music disabled - only notification sounds
+            backgroundMusic = null;
+        }
+        
+        // WhatsApp-like notification sound (more authentic)
+        function playNotificationSound() {
+            if (!audioContext || isMuted) return;
+            
+            // Create the classic WhatsApp "pop" sound
+            const oscillator1 = audioContext.createOscillator();
+            const oscillator2 = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator1.connect(gainNode);
+            oscillator2.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // First tone - higher pitch (like WhatsApp's first "pop")
+            oscillator1.frequency.setValueAtTime(1000, audioContext.currentTime);
+            oscillator1.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.1);
+            oscillator1.type = 'triangle';
+            
+            // Second tone - slightly lower and delayed (the "pop" echo)
+            oscillator2.frequency.setValueAtTime(750, audioContext.currentTime + 0.12);
+            oscillator2.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.22);
+            oscillator2.type = 'triangle';
+            
+            // Envelope for that characteristic WhatsApp "pop" sound
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.4, audioContext.currentTime + 0.02);
+            gainNode.gain.exponentialRampToValueAtTime(0.1, audioContext.currentTime + 0.1);
+            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.14);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.25);
+            
+            oscillator1.start(audioContext.currentTime);
+            oscillator1.stop(audioContext.currentTime + 0.1);
+            
+            oscillator2.start(audioContext.currentTime + 0.12);
+            oscillator2.stop(audioContext.currentTime + 0.25);
+        }
+        
+        // Typing sound effect (more subtle)
+        function playTypingSound() {
+            if (!audioContext || isMuted) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Softer, more realistic typing sound
+            oscillator.frequency.setValueAtTime(150 + Math.random() * 50, audioContext.currentTime);
+            oscillator.type = 'triangle';
+            
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.05, audioContext.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.03);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.03);
+        }
+        
+        // WAI processing sound
+        function playWAIProcessingSound() {
+            if (!audioContext || isMuted) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Gentle rising tone for AI processing
+            oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+            oscillator.frequency.linearRampToValueAtTime(500, audioContext.currentTime + 1);
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 0.1);
+            gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 1);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 1);
+        }
+        
+        // Success completion sound
+        function playSuccessSound() {
+            if (!audioContext || isMuted) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Pleasant success chime
+            oscillator.frequency.setValueAtTime(523, audioContext.currentTime); // C5
+            oscillator.frequency.setValueAtTime(659, audioContext.currentTime + 0.1); // E5
+            oscillator.frequency.setValueAtTime(784, audioContext.currentTime + 0.2); // G5
+            
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.01);
+            gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.4);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.4);
+        }
+        
+        // Toggle mute function
+        function toggleMute() {
+            isMuted = !isMuted;
+            const muteBtn = document.getElementById('muteBtn');
+            muteBtn.textContent = isMuted ? '🔇' : '🔊';
+            muteBtn.title = isMuted ? 'Unmute sounds' : 'Mute sounds';
+            
+            // No background music to control anymore
+        }
+        let currentScenario = 'social';
+        let demoStep = 0;
+        let isRunning = false;
+        
+        const scenarios = {
+            social: {
+                groupName: 'Dev Team Lunch',
+                groupMembers: 'Alice, Bob, Charlie, David, You',
+                avatar: '👥',
+                avatarClass: 'social',
+                initialMessage: {
+                    sender: 'alice',
+                    senderName: 'Alice',
+                    text: "Hey team! Anyone free for lunch today?",
+                    time: "2:14 PM"
+                },
+                flow: [
+                    {
+                        type: 'message',
+                        sender: 'bob',
+                        senderName: 'Bob',
+                        text: "I'm in! But let's figure out where to go. I'm thinking Italian or Thai?",
+                        delay: 2000
+                    },
+                    {
+                        type: 'message',
+                        sender: 'charlie',
+                        senderName: 'Charlie', 
+                        text: "Thai sounds good! But what time works for everyone?",
+                        delay: 1500
+                    },
+                    {
+                        type: 'message',
+                        sender: 'david',
+                        senderName: 'David',
+                        text: "I have a meeting until 1 PM, so any time after that works",
+                        delay: 2000
+                    },
+                    {
+                        type: 'wai-thinking',
+                        text: 'WAI analyzing group coordination patterns...',
+                        delay: 1500
+                    },
+                    {
+                        type: 'wai-suggestion',
+                        title: 'Group Planning Detected',
+                        analysis: 'I notice you\'re coordinating lunch with multiple preferences and scheduling constraints.',
+                        insight: '📊 Detected: Location preferences (2), Time constraints (1), Group consensus needed',
+                        suggestions: [
+                            { text: '🗳️ Create Restaurant Poll', action: 'poll', primary: true },
+                            { text: '📅 Find Common Time', action: 'schedule' },
+                            { text: '✋ Not now', action: 'dismiss' }
+                        ],
+                        delay: 2000
+                    }
+                ]
+            },
+            
+            corporate: {
+                groupName: 'Product Team Standup',
+                groupMembers: 'Sarah (Lead), Mike, Emma, Alex, Lisa, You',
+                avatar: '💼',
+                avatarClass: 'corporate',
+                initialMessage: {
+                    sender: 'sarah',
+                    senderName: 'Sarah',
+                    text: "Good morning team! Let's do our async standup. Please share your updates - yesterday, today, blockers. Voice notes welcome! 🎙️",
+                    time: "9:15 AM"
+                },
+                flow: [
+                    {
+                        type: 'message',
+                        sender: 'mike',
+                        senderName: 'Mike',
+                        text: "Yesterday: Finished user authentication API. Today: Working on payment integration. No blockers currently.",
+                        delay: 3000
+                    },
+                    {
+                        type: 'voice-note',
+                        sender: 'emma',
+                        senderName: 'Emma',
+                        duration: '0:45',
+                        transcript: 'Yesterday I completed the UI mockups for the dashboard and got approval from design team. Today I\'m starting the React implementation. One blocker - I need the API endpoints from Mike for the data visualization components.',
+                        delay: 2500
+                    },
+                    {
+                        type: 'voice-note',
+                        sender: 'alex',
+                        senderName: 'Alex',
+                        duration: '1:12',
+                        transcript: 'Hey team! Yesterday I wrapped up the database optimization we discussed - query performance improved by 40%. Today I\'m tackling the Redis caching layer. Quick blocker: need clarification on the data retention policy from product team.',
+                        delay: 3000
+                    },
+                    {
+                        type: 'message',
+                        sender: 'lisa',
+                        senderName: 'Lisa',
+                        text: "Yesterday: Completed QA testing for auth module, found 2 minor bugs (logged in Jira). Today: Testing payment flow. Blocker: staging environment is down since yesterday evening.",
+                        delay: 2000
+                    },
+                    {
+                        type: 'wai-thinking',
+                        text: 'WAI processing standup updates and voice transcriptions...',
+                        delay: 2500
+                    },
+                    {
+                        type: 'wai-suggestion',
+                        title: 'Standup Summary Ready',
+                        analysis: 'I\'ve analyzed all team updates and voice notes to create a structured standup summary.',
+                        insight: '📋 Processed: 4 updates, 2 voice notes transcribed, 3 blockers identified, Dependencies mapped',
+                        suggestions: [
+                            { text: '📊 Generate Summary', action: 'standup-summary', primary: true },
+                            { text: '🔄 Track Blockers', action: 'track-blockers' },
+                            { text: '📧 Email to Manager', action: 'email-summary' },
+                            { text: '✋ Skip', action: 'dismiss' }
+                        ],
+                        delay: 3000
+                    }
+                ]
+            },
+            
+            business: {
+                groupName: 'Bella Vista Restaurant Staff',
+                groupMembers: 'Maria (Manager), James, Sophie, Carlos, Nina, You',
+                avatar: '🍽️',
+                avatarClass: 'business',
+                initialMessage: {
+                    sender: 'maria',
+                    senderName: 'Maria',
+                    text: "Hey team! Need to sort out next weekend's roster (Dec 21-22). Please let me know your availability when you can! 📅",
+                    time: "3:20 PM"
+                },
+                flow: [
+                    {
+                        type: 'message',
+                        sender: 'james',
+                        senderName: 'James',
+                        text: "I can do Saturday morning and afternoon, but not evening. Sunday I'm free all day!",
+                        delay: 2500
+                    },
+                    {
+                        type: 'message',
+                        sender: 'sophie',
+                        senderName: 'Sophie',
+                        text: "Saturday I can work evening shift for sure. Sunday morning is good too but have plans in the afternoon",
+                        delay: 3000
+                    },
+                    {
+                        type: 'message',
+                        sender: 'carlos',
+                        senderName: 'Carlos',
+                        text: "Weekend looks good! I prefer Saturday evening and Sunday afternoon if possible. Saturday morning is tricky for me",
+                        delay: 2500
+                    },
+                    {
+                        type: 'message',
+                        sender: 'nina',
+                        senderName: 'Nina',
+                        text: "Can't do Saturday unfortunately 😞 But I'm available Sunday - morning and afternoon both work for me!",
+                        delay: 2000
+                    },
+                    {
+                        type: 'wai-thinking',
+                        text: 'WAI analyzing staff availability and shift requirements...',
+                        delay: 2000
+                    },
+                    {
+                        type: 'wai-suggestion',
+                        title: 'Staff Scheduling Detected',
+                        analysis: 'I\'ve analyzed everyone\'s casual availability messages and identified optimal shift coverage.',
+                        insight: '📋 Processed: 4 staff responses, Weekend coverage mapped, 1 coverage gap identified (Saturday morning)',
+                        suggestions: [
+                            { text: '📋 Generate Roster', action: 'staff-roster', primary: true },
+                            { text: '🚨 Show Coverage Gaps', action: 'coverage-gaps' },
+                            { text: '📱 Request More Staff', action: 'request-coverage' },
+                            { text: '✋ Manual Schedule', action: 'dismiss' }
+                        ],
+                        delay: 3000
+                    }
+                ]
+            }
+        };
+        
+        function switchScenario(scenario) {
+            currentScenario = scenario;
+            
+            // Update UI
+            document.querySelectorAll('.scenario-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(scenario + 'Btn').classList.add('active');
+            
+            // Show/hide descriptions
+            document.getElementById('socialDescription').classList.toggle('hidden', scenario !== 'social');
+            document.getElementById('corporateDescription').classList.toggle('hidden', scenario !== 'corporate');
+            document.getElementById('businessDescription').classList.toggle('hidden', scenario !== 'business');
+            
+            // Update chat header
+            const scenarioData = scenarios[scenario];
+            document.getElementById('groupName').textContent = scenarioData.groupName;
+            document.getElementById('groupMembers').textContent = scenarioData.groupMembers;
+            document.getElementById('groupAvatar').textContent = scenarioData.avatar;
+            document.getElementById('groupAvatar').className = `group-avatar ${scenarioData.avatarClass}`;
+            
+            // Update time display
+            let timeDisplay = '9:15 AM';
+            if (scenario === 'social') timeDisplay = '2:14 PM';
+            if (scenario === 'business') timeDisplay = '3:20 PM';
+            document.getElementById('timeDisplay').textContent = timeDisplay;
+            
+            // Reset demo
+            resetDemo();
+        }
+        
+        function startDemo() {
+            // Hide landing page
+            const landingPage = document.getElementById('landingPage');
+            landingPage.classList.add('hidden');
+            
+            // Show main demo after transition
+            setTimeout(() => {
+                landingPage.style.display = 'none';
+            }, 800);
+            
+            if (isRunning) return;
+            
+            // Initialize audio on first interaction
+            if (!audioContext) {
+                initAudio();
+            }
+            
+            isRunning = true;
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('stepIndicator').textContent = 'Demo running...';
+            
+            runConversationFlow();
+        }
+        
+        function runConversationFlow() {
+            const scenario = scenarios[currentScenario];
+            
+            if (demoStep >= scenario.flow.length) {
+                document.getElementById('stepIndicator').textContent = 'Demo complete! WAI is ready to assist.';
+                isRunning = false;
+                return;
+            }
+            
+            const step = scenario.flow[demoStep];
+            
+            setTimeout(() => {
+                if (step.type === 'message') {
+                    addMessage(step);
+                } else if (step.type === 'voice-note') {
+                    addVoiceNote(step);
+                } else if (step.type === 'wai-thinking') {
+                    addWAIThinking(step.text);
+                } else if (step.type === 'wai-suggestion') {
+                    addWAISuggestion(step);
+                }
+                
+                demoStep++;
+                runConversationFlow();
+            }, step.delay);
+        }
+        
+        function addMessage(msg) {
+            const chatContent = document.getElementById('chatContent');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message received';
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble">
+                    <div class="sender-name ${msg.sender}">${msg.senderName}</div>
+                    <div class="message-text">${msg.text}</div>
+                    <div class="message-time">${getCurrentTime()}</div>
+                </div>
+            `;
+            
+            chatContent.appendChild(messageDiv);
+            scrollToBottom();
+            
+            // No sound for regular messages
+            
+            document.getElementById('stepIndicator').textContent = `${msg.senderName} just messaged...`;
+        }
+        
+        function addVoiceNote(note) {
+            const chatContent = document.getElementById('chatContent');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message received';
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble">
+                    <div class="sender-name ${note.sender}">${note.senderName}</div>
+                    <div class="voice-note">
+                        <button class="voice-play-btn" onclick="playVoiceNote('${note.sender}')">▶</button>
+                        <div class="voice-waveform"></div>
+                        <div class="voice-duration">${note.duration}</div>
+                    </div>
+                    <div class="message-time">${getCurrentTime()}</div>
+                </div>
+            `;
+            
+            chatContent.appendChild(messageDiv);
+            scrollToBottom();
+            
+            document.getElementById('stepIndicator').textContent = `${note.senderName} sent voice note...`;
+        }
+        
+        function addWAIThinking(text) {
+            const chatContent = document.getElementById('chatContent');
+            const thinkingDiv = document.createElement('div');
+            thinkingDiv.className = 'wai-thinking';
+            thinkingDiv.innerHTML = `
+                🤖 ${text}
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            
+            chatContent.appendChild(thinkingDiv);
+            scrollToBottom();
+            
+            // Play WAI processing sound
+            setTimeout(() => playWAIProcessingSound(), 200);
+            
+            document.getElementById('stepIndicator').textContent = 'WAI is analyzing the conversation...';
+            
+            setTimeout(() => {
+                if (thinkingDiv.parentNode) {
+                    thinkingDiv.remove();
+                }
+            }, 3000);
+        }
+        
+        function addWAISuggestion(suggestion) {
+            const chatContent = document.getElementById('chatContent');
+            const suggestionDiv = document.createElement('div');
+            suggestionDiv.className = 'wai-suggestion';
+            
+            const suggestionsHTML = suggestion.suggestions.map(s => 
+                `<button class="suggestion-btn ${s.primary ? 'primary' : ''}" onclick="handleSuggestion('${s.action}')">${s.text}</button>`
+            ).join('');
+            
+            suggestionDiv.innerHTML = `
+                <div class="wai-header">
+                    <div class="wai-avatar">🤖</div>
+                    <div class="wai-content">
+                        <div class="wai-title">${suggestion.title}</div>
+                        <div class="wai-analysis">${suggestion.analysis}</div>
+                        <div class="wai-insight">${suggestion.insight}</div>
+                        <div class="suggestion-actions">
+                            ${suggestionsHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            chatContent.appendChild(suggestionDiv);
+            scrollToBottom();
+            
+            document.getElementById('stepIndicator').textContent = 'WAI has suggestions! Click to interact.';
+        }
+        
+        function handleSuggestion(action) {
+            const chatContent = document.getElementById('chatContent');
+            
+            // No sound for suggestion clicks - only during generation
+            
+            if (action === 'poll') {
+                // Create restaurant poll result
+                const pollResult = document.createElement('div');
+                pollResult.className = 'message sent';
+                pollResult.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="collaboration-result">
+                            <div class="result-header">
+                                <div class="result-icon">🗳️</div>
+                                <div class="result-title">Restaurant Poll Created</div>
+                            </div>
+                            <div class="result-details">
+                                <strong>Where should we go for lunch?</strong><br>
+                                🍝 Italian Garden - 0 votes<br>
+                                🍜 Thai Spice - 0 votes<br>
+                                🍔 Burger Junction - 0 votes
+                            </div>
+                            <div class="result-actions">
+                                <button class="result-btn" onclick="openTool('calendly')">🗳️ Vote Now</button>
+                                <button class="result-btn" onclick="openTool('calendly')">📊 See Results</button>
+                                <button class="result-btn" onclick="openTool('slack')">➕ Share in Slack</button>
+                            </div>
+                        </div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                
+                chatContent.appendChild(pollResult);
+                document.getElementById('stepIndicator').textContent = '✅ Poll created! Team can now vote.';
+                
+            } else if (action === 'schedule') {
+                // Create scheduling assistant result
+                const scheduleResult = document.createElement('div');
+                scheduleResult.className = 'message sent';
+                scheduleResult.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="collaboration-result">
+                            <div class="result-header">
+                                <div class="result-icon">📅</div>
+                                <div class="result-title">Time Finder Active</div>
+                            </div>
+                            <div class="result-details">
+                                <strong>Finding common availability...</strong><br>
+                                ✅ 1:15 PM - Everyone free<br>
+                                ✅ 1:30 PM - Everyone free<br>
+                                ⚠️ 1:00 PM - David in meeting
+                            </div>
+                            <div class="result-actions">
+                                <button class="result-btn" onclick="openTool('calendly')">⏰ Pick Time</button>
+                                <button class="result-btn" onclick="openTool('calendly')">📋 Add to Calendar</button>
+                            </div>
+                        </div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                
+                chatContent.appendChild(scheduleResult);
+                document.getElementById('stepIndicator').textContent = '⏰ Best times found! Ready to schedule.';
+                
+            } else if (action === 'standup-summary') {
+                // Create standup summary
+                const summaryResult = document.createElement('div');
+                summaryResult.className = 'message sent';
+                summaryResult.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="standup-summary">
+                            <div class="summary-header">
+                                <div class="summary-icon">📋</div>
+                                <div>
+                                    <div class="summary-title">Daily Standup Summary</div>
+                                    <div class="summary-date">${new Date().toLocaleDateString()}</div>
+                                </div>
+                            </div>
+                            <div class="team-updates">
+                                <div class="team-member">
+                                    <div class="member-name">Mike (Dev)</div>
+                                    <div class="update-item update-yesterday">✅ Completed user auth API</div>
+                                    <div class="update-item update-today">🔄 Payment integration in progress</div>
+                                    <div class="update-item">🚀 No blockers</div>
+                                </div>
+                                <div class="team-member">
+                                    <div class="member-name">Emma (Frontend)</div>
+                                    <div class="update-item update-yesterday">✅ UI mockups approved</div>
+                                    <div class="update-item update-today">🔄 React implementation starting</div>
+                                    <div class="update-item update-blockers">🚫 Needs API endpoints from Mike</div>
+                                </div>
+                                <div class="team-member">
+                                    <div class="member-name">Alex (Backend)</div>
+                                    <div class="update-item update-yesterday">✅ DB optimization (+40% performance)</div>
+                                    <div class="update-item update-today">🔄 Redis caching implementation</div>
+                                    <div class="update-item update-blockers">🚫 Needs data retention policy clarification</div>
+                                </div>
+                                <div class="team-member">
+                                    <div class="member-name">Lisa (QA)</div>
+                                    <div class="update-item update-yesterday">✅ Auth module testing (2 bugs found)</div>
+                                    <div class="update-item update-today">🔄 Payment flow testing</div>
+                                    <div class="update-item update-blockers">🚫 Staging environment down</div>
+                                </div>
+                            </div>
+                            <div class="summary-actions">
+                                <button class="summary-btn" onclick="openTool('slack')">📧 Share in Slack</button>
+                                <button class="summary-btn" onclick="openTool('jira')">📊 Export to Jira</button>
+                                <button class="summary-btn" onclick="openTool('jira')">🔄 Track in Jira</button>
+                            </div>
+                        </div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                
+                chatContent.appendChild(summaryResult);
+                document.getElementById('stepIndicator').textContent = '📋 Standup summary generated! Ready to share with manager.';
+                
+            } else if (action === 'track-blockers') {
+                const blockerResult = document.createElement('div');
+                blockerResult.className = 'message sent';
+                blockerResult.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="collaboration-result">
+                            <div class="result-header">
+                                <div class="result-icon">🚫</div>
+                                <div class="result-title">Blocker Tracker Created</div>
+                            </div>
+                            <div class="result-details">
+                                <strong>3 Active Blockers Identified:</strong><br>
+                                🔴 Emma → API endpoints from Mike<br>
+                                🔴 Alex → Data retention policy<br>
+                                🔴 Lisa → Staging environment down
+                            </div>
+                            <div class="result-actions">
+                                <button class="result-btn" onclick="openTool('jira')">🎯 Create Jira Tickets</button>
+                                <button class="result-btn" onclick="openTool('slack')">⏰ Notify in Slack</button>
+                                <button class="result-btn" onclick="openTool('jira')">📧 Escalate Issues</button>
+                            </div>
+                        </div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                
+                chatContent.appendChild(blockerResult);
+                document.getElementById('stepIndicator').textContent = '🚫 Blockers tracked! Actions can be assigned.';
+                
+            } else if (action === 'email-summary') {
+                const emailResult = document.createElement('div');
+                emailResult.className = 'message sent';
+                emailResult.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="collaboration-result">
+                            <div class="result-header">
+                                <div class="result-icon">📧</div>
+                                <div class="result-title">Email Draft Ready</div>
+                            </div>
+                            <div class="result-details">
+                                <strong>To:</strong> sarah.manager@company.com<br>
+                                <strong>Subject:</strong> Daily Standup Summary - ${new Date().toLocaleDateString()}<br><br>
+                                <em>Professional summary generated with team updates, blockers, and action items ready for manager review.</em>
+                            </div>
+                            <div class="result-actions">
+                                <button class="result-btn" onclick="openTool('standup-dashboard')">📧 Send Now</button>
+                                <button class="result-btn" onclick="openTool('standup-dashboard')">✏️ Edit Draft</button>
+                                <button class="result-btn" onclick="openTool('standup-dashboard')">📅 Schedule Send</button>
+                            </div>
+                        </div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                
+                chatContent.appendChild(emailResult);
+                document.getElementById('stepIndicator').textContent = '📧 Email draft created! Ready to send to manager.';
+                
+            } else if (action === 'staff-roster') {
+                const rosterResult = document.createElement('div');
+                rosterResult.className = 'message sent';
+                rosterResult.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="collaboration-result">
+                            <div class="result-header">
+                                <div class="result-icon">📋</div>
+                                <div class="result-title">Staff Roster Generated</div>
+                            </div>
+                            <div class="result-details">
+                                <strong>Weekend Schedule (Dec 21-22):</strong><br><br>
+                                <strong>Saturday:</strong><br>
+                                • Morning: <span style="color: #ff6b35">Need coverage</span><br>
+                                • Afternoon: James<br>
+                                • Evening: Sophie, Carlos<br><br>
+                                <strong>Sunday:</strong><br>
+                                • Morning: Nina, Sophie<br>
+                                • Afternoon: James, Carlos, Nina
+                            </div>
+                            <div class="result-actions">
+                                <button class="result-btn" onclick="openTool('roster-ai')">📱 Find Coverage</button>
+                                <button class="result-btn" onclick="openTool('roster-ai')">📧 Send Roster</button>
+                                <button class="result-btn" onclick="openTool('roster-ai')">✏️ Edit Schedule</button>
+                            </div>
+                        </div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                
+                chatContent.appendChild(rosterResult);
+                document.getElementById('stepIndicator').textContent = '📋 Roster generated! Saturday morning needs coverage.';
+                
+            } else if (action === 'coverage-gaps') {
+                const gapResult = document.createElement('div');
+                gapResult.className = 'message sent';
+                gapResult.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="collaboration-result">
+                            <div class="result-header">
+                                <div class="result-icon">🚨</div>
+                                <div class="result-title">Coverage Gaps Identified</div>
+                            </div>
+                            <div class="result-details">
+                                <strong>Critical Gaps Found:</strong><br>
+                                🔴 Saturday Morning: 0 staff available<br>
+                                🟡 Saturday Evening: Only 2 staff (need 3)<br>
+                                🟢 Sunday: Well covered
+                            </div>
+                            <div class="result-actions">
+                                <button class="result-btn" onclick="openTool('roster-ai')">📞 Call Available Staff</button>
+                                <button class="result-btn" onclick="openTool('roster-ai')">💵 Offer Overtime</button>
+                                <button class="result-btn" onclick="openTool('roster-ai')">📅 Reschedule</button>
+                            </div>
+                        </div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                
+                chatContent.appendChild(gapResult);
+                document.getElementById('stepIndicator').textContent = '🚨 Coverage gaps identified! Actions suggested.';
+                
+            } else if (action === 'request-coverage') {
+                const requestResult = document.createElement('div');
+                requestResult.className = 'message sent';
+                requestResult.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="collaboration-result">
+                            <div class="result-header">
+                                <div class="result-icon">📱</div>
+                                <div class="result-title">Coverage Request Sent</div>
+                            </div>
+                            <div class="result-details">
+                                <strong>Automated messages sent to:</strong><br>
+                                • Part-time staff pool (3 people)<br>
+                                • Employees with overtime approval<br>
+                                • Backup staff list<br><br>
+                                <em>Responses expected within 2 hours</em>
+                            </div>
+                            <div class="result-actions">
+                                <button class="result-btn" onclick="openTool('roster-ai')">📈 Track Responses</button>
+                                <button class="result-btn" onclick="openTool('roster-ai')">🔔 Send Reminder</button>
+                            </div>
+                        </div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                
+                chatContent.appendChild(requestResult);
+                document.getElementById('stepIndicator').textContent = '📱 Coverage requests sent! Tracking responses...';
+                
+            } else if (action === 'dismiss') {
+                document.getElementById('stepIndicator').textContent = 'WAI dismissed. Always ready when you need help!';
+            }
+            
+            // Fade out the suggestion after interaction
+            const suggestions = document.querySelectorAll('.wai-suggestion');
+            if (suggestions.length > 0) {
+                suggestions[suggestions.length - 1].style.opacity = '0.5';
+            }
+            
+            scrollToBottom();
+        }
+        
+        function resetDemo() {
+            const scenario = scenarios[currentScenario];
+            
+            document.getElementById('chatContent').innerHTML = `
+                <div class="message received">
+                    <div class="message-bubble">
+                        <div class="sender-name ${scenario.initialMessage.sender}">${scenario.initialMessage.senderName}</div>
+                        <div class="message-text">${scenario.initialMessage.text}</div>
+                        <div class="message-time">${scenario.initialMessage.time}</div>
+                    </div>
+                </div>
+            `;
+            
+            demoStep = 0;
+            isRunning = false;
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stepIndicator').textContent = 'Ready to begin';
+        }
+        
+        function scrollToBottom() {
+            const chatContent = document.getElementById('chatContent');
+            chatContent.scrollTop = chatContent.scrollHeight;
+        }
+        
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+        
+        function sendMessage() {
+            const input = document.querySelector('.message-input');
+            if (input.value.trim()) {
+                const chatContent = document.getElementById('chatContent');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message sent';
+                
+                messageDiv.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="message-text">${input.value}</div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                `;
+                
+                chatContent.appendChild(messageDiv);
+                
+                // Play subtle typing sound
+                playTypingSound();
+                
+                input.value = '';
+                scrollToBottom();
+            }
+        }
+        
+        function manualWAI() {
+            document.getElementById('stepIndicator').textContent = 'WAI Assistant activated manually!';
+        }
+        
+        function playVoiceNote(sender) {
+            document.getElementById('stepIndicator').textContent = `🎵 Playing ${sender}'s voice note...`;
+        }
+        
+        // Tool Integration Functions
+        function openTool(toolType, data = {}) {
+            const tools = {
+                'jira': {
+                    icon: '🔷',
+                    title: 'Jira Integration',
+                    subtitle: 'Project management & issue tracking',
+                    features: [
+                        {
+                            title: '🎯 Smart Ticket Creation',
+                            desc: 'Auto-generate Jira tickets from blockers with proper priority, labels, and assignees'
+                        },
+                        {
+                            title: '📊 Sprint Analytics',
+                            desc: 'Real-time sprint progress, velocity tracking, and burndown charts integration'
+                        },
+                        {
+                            title: '🔗 WhatsApp-Jira Sync',
+                            desc: 'Bidirectional sync between chat updates and Jira ticket status changes'
+                        }
+                    ],
+                    actions: [
+                        { text: '🚀 Open in Jira', primary: true },
+                        { text: '🎫 Create Tickets', secondary: true },
+                        { text: '📈 View Dashboard', secondary: true }
+                    ]
+                },
+                'slack': {
+                    icon: '💬',
+                    title: 'Slack Integration',
+                    subtitle: 'Team communication & workflows',
+                    features: [
+                        {
+                            title: '📢 Smart Notifications',
+                            desc: 'Send formatted standup summaries to relevant Slack channels automatically'
+                        },
+                        {
+                            title: '🤖 Slack Bot Commands',
+                            desc: 'Use /wai commands in Slack to trigger polls, schedules, and reports'
+                        },
+                        {
+                            title: '📋 Cross-Platform Sync',
+                            desc: 'Sync WhatsApp group decisions with Slack workspace discussions'
+                        }
+                    ],
+                    actions: [
+                        { text: '💬 Open Slack', primary: true },
+                        { text: '📤 Share to Channel', secondary: true },
+                        { text: '🔔 Setup Notifications', secondary: true }
+                    ]
+                },
+                'calendly': {
+                    icon: '📅',
+                    title: 'Calendly Integration',
+                    subtitle: 'Smart scheduling & availability',
+                    features: [
+                        {
+                            title: '⚡ Instant Booking Links',
+                            desc: 'Generate Calendly links based on group availability and preferences'
+                        },
+                        {
+                            title: '🎯 Smart Time Suggestions',
+                            desc: 'AI suggests optimal meeting times using Calendly availability data'
+                        },
+                        {
+                            title: '📲 Auto Calendar Invites',
+                            desc: 'Automatically send calendar invites to all WhatsApp group participants'
+                        }
+                    ],
+                    actions: [
+                        { text: '📅 Open Calendly', primary: true },
+                        { text: '🔗 Generate Link', secondary: true },
+                        { text: '⚙️ Setup Integration', secondary: true }
+                    ]
+                }
+            };
+            
+            const tool = tools[toolType];
+            if (!tool) return;
+            
+            const modal = document.createElement('div');
+            modal.className = 'tool-modal';
+            modal.onclick = (e) => {
+                if (e.target === modal) closeTool(modal);
+            };
+            
+            const featuresHTML = tool.features.map(feature => `
+                <div class="tool-feature">
+                    <div class="feature-title">${feature.title}</div>
+                    <div class="feature-desc">${feature.desc}</div>
+                </div>
+            `).join('');
+            
+            const actionsHTML = tool.actions.map(action => `
+                <button class="tool-btn ${action.secondary ? 'secondary' : ''}" onclick="handleToolAction('${toolType}', '${action.text}')">
+                    ${action.text}
+                </button>
+            `).join('');
+            
+            modal.innerHTML = `
+                <div class="tool-content">
+                    <div class="tool-header">
+                        <div class="tool-icon">${tool.icon}</div>
+                        <div class="tool-title">
+                            <h3>${tool.title}</h3>
+                            <div class="tool-subtitle">${tool.subtitle}</div>
+                        </div>
+                        <button class="tool-close" onclick="closeTool(this.closest('.tool-modal'))">×</button>
+                    </div>
+                    <div class="tool-body">
+                        ${featuresHTML}
+                        <div class="integration-badge">
+                            🔗 Integrated with WAI Assistant
+                        </div>
+                    </div>
+                    <div class="tool-actions">
+                        ${actionsHTML}
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Play success sound for tool integration
+            setTimeout(() => playSuccessSound(), 200);
+        }
+        
+        function closeTool(modal) {
+            modal.style.animation = 'modalSlideOut 0.2s ease-in forwards';
+            setTimeout(() => {
+                if (modal.parentNode) {
+                    modal.parentNode.removeChild(modal);
+                }
+            }, 200);
+        }
+        
+        function handleToolAction(toolType, action) {
+            // Simulate tool actions with realistic feedback
+            const feedbackMessages = {
+                'jira': {
+                    '🚀 Open in Jira': 'Opening Jira workspace...',
+                    '🎫 Create Tickets': 'Creating Jira tickets from blockers...',
+                    '📈 View Dashboard': 'Opening Jira sprint dashboard...'
+                },
+                'slack': {
+                    '💬 Open Slack': 'Opening Slack workspace...',
+                    '📤 Share to Channel': 'Sharing summary to #dev-team...',
+                    '🔔 Setup Notifications': 'Configuring Slack notifications...'
+                },
+                'calendly': {
+                    '📅 Open Calendly': 'Opening Calendly dashboard...',
+                    '🔗 Generate Link': 'Creating group booking link...',
+                    '⚙️ Setup Integration': 'Configuring Calendly integration...'
+                }
+            };
+            
+            const message = feedbackMessages[toolType]?.[action] || 'Processing action...';
+            
+            // Update step indicator with tool action feedback
+            document.getElementById('stepIndicator').textContent = `✨ ${message}`;
+            
+            // Close modal after brief delay
+            setTimeout(() => {
+                const modal = document.querySelector('.tool-modal');
+                if (modal) closeTool(modal);
+            }, 1500);
+            
+            playSuccessSound();
+        }
+        
+        function closeBanner() {
+            const banner = document.getElementById('topBanner');
+            banner.style.transform = 'translateY(-100%)';
+            banner.style.opacity = '0';
+            setTimeout(() => {
+                banner.style.display = 'none';
+                document.body.style.paddingTop = '20px';
+            }, 300);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            resetDemo();
+        });
+        
+        // Allow Enter key to send message
+        document.querySelector('.message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
