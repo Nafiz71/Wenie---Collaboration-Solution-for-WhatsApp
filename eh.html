@@ -2091,97 +2091,186 @@
         };
         
         function switchScenario(scenario) {
-            currentScenario = scenario;
-            
-            // Update UI
-            document.querySelectorAll('.scenario-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(scenario + 'Btn').classList.add('active');
-            
-            // Show/hide descriptions
-            document.getElementById('socialDescription').classList.toggle('hidden', scenario !== 'social');
-            document.getElementById('corporateDescription').classList.toggle('hidden', scenario !== 'corporate');
-            document.getElementById('businessDescription').classList.toggle('hidden', scenario !== 'business');
-            
-            // Update chat header
-            const scenarioData = scenarios[scenario];
-            document.getElementById('groupName').textContent = scenarioData.groupName;
-            document.getElementById('groupMembers').textContent = scenarioData.groupMembers;
-            document.getElementById('groupAvatar').textContent = scenarioData.avatar;
-            document.getElementById('groupAvatar').className = `group-avatar ${scenarioData.avatarClass}`;
-            
-            // Update time display
-            let timeDisplay = '9:15 AM';
-            if (scenario === 'social') timeDisplay = '2:14 PM';
-            if (scenario === 'business') timeDisplay = '3:20 PM';
-            document.getElementById('timeDisplay').textContent = timeDisplay;
-            
-            // Reset demo
-            resetDemo();
+            try {
+                console.log('Switching to scenario:', scenario);
+                currentScenario = scenario;
+                
+                // Update UI
+                document.querySelectorAll('.scenario-btn').forEach(btn => btn.classList.remove('active'));
+                const scenarioBtn = document.getElementById(scenario + 'Btn');
+                if (scenarioBtn) {
+                    scenarioBtn.classList.add('active');
+                }
+                
+                // Show/hide descriptions
+                document.getElementById('socialDescription').classList.toggle('hidden', scenario !== 'social');
+                document.getElementById('corporateDescription').classList.toggle('hidden', scenario !== 'corporate');
+                document.getElementById('businessDescription').classList.toggle('hidden', scenario !== 'business');
+                
+                // Update chat header
+                const scenarioData = scenarios[scenario];
+                if (scenarioData) {
+                    document.getElementById('groupName').textContent = scenarioData.groupName;
+                    document.getElementById('groupMembers').textContent = scenarioData.groupMembers;
+                    document.getElementById('groupAvatar').textContent = scenarioData.avatar;
+                    document.getElementById('groupAvatar').className = `group-avatar ${scenarioData.avatarClass}`;
+                } else {
+                    console.error('Scenario data not found for:', scenario);
+                }
+                
+                // Update time display
+                let timeDisplay = '9:15 AM';
+                if (scenario === 'social') timeDisplay = '2:14 PM';
+                if (scenario === 'business') timeDisplay = '3:20 PM';
+                document.getElementById('timeDisplay').textContent = timeDisplay;
+                
+                // Reset demo
+                resetDemo();
+                
+            } catch (error) {
+                console.error('Error switching scenario:', error);
+            }
         }
         
         function startDemo() {
-            // Hide landing page immediately
-            const landingPage = document.getElementById('landingPage');
-            if (landingPage) {
-                landingPage.classList.add('hidden');
+            try {
+                console.log('Starting demo for scenario:', currentScenario);
                 
-                // Show main demo after transition
-                setTimeout(() => {
+                // Hide landing page immediately and prevent it from coming back
+                const landingPage = document.getElementById('landingPage');
+                if (landingPage) {
+                    landingPage.classList.add('hidden');
+                    // Set display to none immediately to prevent any visual glitch
                     landingPage.style.display = 'none';
-                }, 800);
+                    // Set a flag to prevent landing page from showing again
+                    landingPage.setAttribute('data-hidden', 'true');
+                } else {
+                    console.error('Landing page element not found');
+                }
+                
+                // Prevent multiple demo starts
+                if (isRunning) {
+                    console.log('Demo already running, skipping');
+                    return;
+                }
+                
+                // Check if scenario is valid
+                if (!scenarios[currentScenario]) {
+                    console.error('Current scenario not found:', currentScenario);
+                    const stepIndicator = document.getElementById('stepIndicator');
+                    if (stepIndicator) {
+                        stepIndicator.textContent = 'Error: Scenario not loaded';
+                    }
+                    return;
+                }
+                
+                // Initialize audio on first interaction
+                if (!audioContext) {
+                    try {
+                        initAudio();
+                    } catch (audioError) {
+                        console.log('Audio initialization failed:', audioError);
+                    }
+                }
+                
+                // Start the demo
+                isRunning = true;
+                const startBtn = document.getElementById('startBtn');
+                if (startBtn) {
+                    startBtn.disabled = true;
+                }
+                
+                const stepIndicator = document.getElementById('stepIndicator');
+                if (stepIndicator) {
+                    stepIndicator.textContent = 'Demo starting...';
+                }
+                
+                // Reset demo step counter
+                demoStep = 0;
+                
+                // Ensure the chat content is visible and ready
+                const chatContent = document.getElementById('chatContent');
+                if (chatContent) {
+                    // Make sure chat is ready before starting
+                    resetDemo();
+                }
+                
+                // Small delay to ensure DOM is ready and landing page is fully hidden
+                setTimeout(() => {
+                    console.log('Running conversation flow...');
+                    runConversationFlow();
+                }, 300);
+                
+            } catch (error) {
+                console.error('Error in startDemo:', error);
+                
+                // Reset state on error
+                isRunning = false;
+                const startBtn = document.getElementById('startBtn');
+                if (startBtn) {
+                    startBtn.disabled = false;
+                }
+                
+                const stepIndicator = document.getElementById('stepIndicator');
+                if (stepIndicator) {
+                    stepIndicator.textContent = 'Error occurred. Try again.';
+                }
             }
-            
-            // Prevent multiple demo starts
-            if (isRunning) return;
-            
-            // Initialize audio on first interaction
-            if (!audioContext) {
-                initAudio();
-            }
-            
-            // Start the demo
-            isRunning = true;
-            const startBtn = document.getElementById('startBtn');
-            if (startBtn) {
-                startBtn.disabled = true;
-            }
-            
-            const stepIndicator = document.getElementById('stepIndicator');
-            if (stepIndicator) {
-                stepIndicator.textContent = 'Demo running...';
-            }
-            
-            // Small delay to ensure DOM is ready
-            setTimeout(() => {
-                runConversationFlow();
-            }, 100);
         }
         
         function runConversationFlow() {
-            const scenario = scenarios[currentScenario];
-            
-            if (demoStep >= scenario.flow.length) {
-                document.getElementById('stepIndicator').textContent = 'Demo complete! Wenie is ready to assist.';
-                isRunning = false;
-                return;
-            }
-            
-            const step = scenario.flow[demoStep];
-            
-            setTimeout(() => {
-                if (step.type === 'message') {
-                    addMessage(step);
-                } else if (step.type === 'voice-note') {
-                    addVoiceNote(step);
-                } else if (step.type === 'wai-thinking') {
-                    addWAIThinking(step.text);
-                } else if (step.type === 'wai-suggestion') {
-                    addWAISuggestion(step);
+            try {
+                const scenario = scenarios[currentScenario];
+                
+                if (!scenario || !scenario.flow) {
+                    console.error('Scenario not found or invalid:', currentScenario);
+                    document.getElementById('stepIndicator').textContent = 'Error: Scenario not loaded properly';
+                    return;
                 }
                 
-                demoStep++;
-                runConversationFlow();
-            }, step.delay);
+                if (demoStep >= scenario.flow.length) {
+                    document.getElementById('stepIndicator').textContent = 'Demo complete! Wenie is ready to assist.';
+                    isRunning = false;
+                    return;
+                }
+                
+                const step = scenario.flow[demoStep];
+                
+                if (!step) {
+                    console.error('Step not found at index:', demoStep);
+                    document.getElementById('stepIndicator').textContent = 'Error: Demo step not found';
+                    return;
+                }
+                
+                setTimeout(() => {
+                    try {
+                        if (step.type === 'message') {
+                            addMessage(step);
+                        } else if (step.type === 'voice-note') {
+                            addVoiceNote(step);
+                        } else if (step.type === 'wai-thinking') {
+                            addWAIThinking(step.text);
+                        } else if (step.type === 'wai-suggestion') {
+                            addWAISuggestion(step);
+                        }
+                        
+                        demoStep++;
+                        runConversationFlow();
+                    } catch (stepError) {
+                        console.error('Error processing step:', stepError);
+                        document.getElementById('stepIndicator').textContent = 'Error during demo step';
+                    }
+                }, step.delay || 1000);
+                
+            } catch (error) {
+                console.error('Error in runConversationFlow:', error);
+                document.getElementById('stepIndicator').textContent = 'Demo error occurred';
+                isRunning = false;
+                const startBtn = document.getElementById('startBtn');
+                if (startBtn) {
+                    startBtn.disabled = false;
+                }
+            }
         }
         
         function addMessage(msg) {
@@ -2797,35 +2886,47 @@
         }
         
         function resetDemo() {
-            const scenario = scenarios[currentScenario];
-            
-            // Reset demo state
-            demoStep = 0;
-            isRunning = false;
-            
-            // Reset UI elements safely
-            const startBtn = document.getElementById('startBtn');
-            if (startBtn) {
-                startBtn.disabled = false;
-            }
-            
-            const stepIndicator = document.getElementById('stepIndicator');
-            if (stepIndicator) {
-                stepIndicator.textContent = 'Ready to begin';
-            }
-            
-            // Reset chat content
-            const chatContent = document.getElementById('chatContent');
-            if (chatContent && scenario && scenario.initialMessage) {
-                chatContent.innerHTML = `
-                    <div class="message received">
-                        <div class="message-bubble">
-                            <div class="sender-name ${scenario.initialMessage.sender}">${scenario.initialMessage.senderName}</div>
-                            <div class="message-text">${scenario.initialMessage.text}</div>
-                            <div class="message-time">${scenario.initialMessage.time}</div>
+            try {
+                const scenario = scenarios[currentScenario];
+                
+                // Reset demo state
+                demoStep = 0;
+                isRunning = false;
+                
+                // Reset UI elements safely
+                const startBtn = document.getElementById('startBtn');
+                if (startBtn) {
+                    startBtn.disabled = false;
+                }
+                
+                const stepIndicator = document.getElementById('stepIndicator');
+                if (stepIndicator) {
+                    stepIndicator.textContent = 'Ready to begin';
+                }
+                
+                // Reset chat content
+                const chatContent = document.getElementById('chatContent');
+                if (chatContent && scenario && scenario.initialMessage) {
+                    chatContent.innerHTML = `
+                        <div class="message received">
+                            <div class="message-bubble">
+                                <div class="sender-name ${scenario.initialMessage.sender}">${scenario.initialMessage.senderName}</div>
+                                <div class="message-text">${scenario.initialMessage.text}</div>
+                                <div class="message-time">${scenario.initialMessage.time}</div>
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                }
+                
+                // Ensure landing page stays hidden if it was previously hidden
+                const landingPage = document.getElementById('landingPage');
+                if (landingPage && landingPage.getAttribute('data-hidden') === 'true') {
+                    landingPage.style.display = 'none';
+                    landingPage.classList.add('hidden');
+                }
+                
+            } catch (error) {
+                console.error('Error in resetDemo:', error);
             }
         }
         
@@ -3053,6 +3154,15 @@
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing...');
+            
+            // Ensure landing page doesn't interfere with demo
+            const landingPage = document.getElementById('landingPage');
+            if (landingPage && landingPage.getAttribute('data-hidden') === 'true') {
+                landingPage.style.display = 'none';
+                landingPage.classList.add('hidden');
+            }
+            
             resetDemo();
         });
         
