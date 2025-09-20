@@ -2120,15 +2120,18 @@
         }
         
         function startDemo() {
-            // Hide landing page
+            // Hide landing page immediately
             const landingPage = document.getElementById('landingPage');
-            landingPage.classList.add('hidden');
+            if (landingPage) {
+                landingPage.classList.add('hidden');
+                
+                // Show main demo after transition
+                setTimeout(() => {
+                    landingPage.style.display = 'none';
+                }, 800);
+            }
             
-            // Show main demo after transition
-            setTimeout(() => {
-                landingPage.style.display = 'none';
-            }, 800);
-            
+            // Prevent multiple demo starts
             if (isRunning) return;
             
             // Initialize audio on first interaction
@@ -2136,11 +2139,22 @@
                 initAudio();
             }
             
+            // Start the demo
             isRunning = true;
-            document.getElementById('startBtn').disabled = true;
-            document.getElementById('stepIndicator').textContent = 'Demo running...';
+            const startBtn = document.getElementById('startBtn');
+            if (startBtn) {
+                startBtn.disabled = true;
+            }
             
-            runConversationFlow();
+            const stepIndicator = document.getElementById('stepIndicator');
+            if (stepIndicator) {
+                stepIndicator.textContent = 'Demo running...';
+            }
+            
+            // Small delay to ensure DOM is ready
+            setTimeout(() => {
+                runConversationFlow();
+            }, 100);
         }
         
         function runConversationFlow() {
@@ -2785,20 +2799,34 @@
         function resetDemo() {
             const scenario = scenarios[currentScenario];
             
-            document.getElementById('chatContent').innerHTML = `
-                <div class="message received">
-                    <div class="message-bubble">
-                        <div class="sender-name ${scenario.initialMessage.sender}">${scenario.initialMessage.senderName}</div>
-                        <div class="message-text">${scenario.initialMessage.text}</div>
-                        <div class="message-time">${scenario.initialMessage.time}</div>
-                    </div>
-                </div>
-            `;
-            
+            // Reset demo state
             demoStep = 0;
             isRunning = false;
-            document.getElementById('startBtn').disabled = false;
-            document.getElementById('stepIndicator').textContent = 'Ready to begin';
+            
+            // Reset UI elements safely
+            const startBtn = document.getElementById('startBtn');
+            if (startBtn) {
+                startBtn.disabled = false;
+            }
+            
+            const stepIndicator = document.getElementById('stepIndicator');
+            if (stepIndicator) {
+                stepIndicator.textContent = 'Ready to begin';
+            }
+            
+            // Reset chat content
+            const chatContent = document.getElementById('chatContent');
+            if (chatContent && scenario && scenario.initialMessage) {
+                chatContent.innerHTML = `
+                    <div class="message received">
+                        <div class="message-bubble">
+                            <div class="sender-name ${scenario.initialMessage.sender}">${scenario.initialMessage.senderName}</div>
+                            <div class="message-text">${scenario.initialMessage.text}</div>
+                            <div class="message-time">${scenario.initialMessage.time}</div>
+                        </div>
+                    </div>
+                `;
+            }
         }
         
         function scrollToBottom() {
