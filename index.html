@@ -274,6 +274,58 @@
             transform: scale(1.1);
         }
         
+        /* Floating Demo Button */
+        .floating-demo-btn {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 25px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            animation: floatingPulse 3s ease-in-out infinite;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .floating-demo-btn:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.6);
+            background: linear-gradient(135deg, #128C7E, #25D366);
+        }
+        
+        .floating-demo-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        @keyframes floatingPulse {
+            0%, 100% {
+                box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            }
+            50% {
+                box-shadow: 0 12px 35px rgba(37, 211, 102, 0.6);
+            }
+        }
+        
+        /* Hide floating button on mobile to avoid clutter */
+        @media (max-width: 768px) {
+            .floating-demo-btn {
+                display: none;
+            }
+        }
+        
         .demo-info {
             max-width: 350px;
             color: white;
@@ -1662,6 +1714,41 @@
 
     <!-- Top Banner -->
     <div class="top-banner" id="topBanner">
+        <div class="banner-content">
+            <div class="banner-logos">
+                <div class="whatsapp-placeholder">📱</div>
+                <img src="WhatsApp_icon.png" alt="WhatsApp" class="whatsapp-icon" onerror="this.style.display='none'; this.previousElementSibling.style.display='flex'">
+                <div class="eh-placeholder">EH</div>
+                <img src="ehpng.png" alt="EH Logo" class="banner-logo" onerror="this.style.display='none'; this.previousElementSibling.style.display='flex'">
+            </div>
+            <div class="banner-text">
+                <div class="banner-title">Wenie - WhatsApp AI Collaborative Assistant</div>
+                <div class="banner-subtitle">Experience intelligent WhatsApp AI that adapts to social and corporate contexts</div>
+            </div>
+            <div class="banner-actions">
+                <button class="banner-btn" onclick="initAudio(); toggleMute()" id="muteBtn" title="Toggle sounds">
+                    🔊
+                </button>
+                <button class="banner-btn info" onclick="showLandingPage()">
+                    📖 About Wenie
+                </button>
+                <a href="eh.html" class="banner-btn demo">
+                    ▶️ Try Demo
+                </a>
+                <a href="journey.html" class="banner-btn" style="background: linear-gradient(135deg, #9D4EDD, #CE84CF); color: white;">
+                    📄 Proposed Solution Document
+                </a>
+            </div>
+            <button class="banner-close" onclick="closeBanner()">
+                ×
+            </button>
+        </div>
+    </div>
+    
+    <!-- Floating Demo Button -->
+    <a href="eh.html" class="floating-demo-btn" title="Experience Wenie Demo">
+        🚀 Try Demo
+    </a>
         <div class="banner-content">
             <div class="banner-logos">
                 <div class="whatsapp-placeholder">📱</div>
