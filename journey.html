@@ -564,6 +564,106 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        /* Dropdown Styles */
+        .dropdown-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        
+        .dropdown-header {
+            padding: 25px 40px;
+            background: rgba(255,215,0,0.1);
+            border-bottom: 1px solid rgba(255,215,0,0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-header:hover {
+            background: rgba(255,215,0,0.15);
+        }
+        
+        .dropdown-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #FFD700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 0;
+        }
+        
+        .dropdown-arrow {
+            font-size: 1.5rem;
+            color: #FFD700;
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-content {
+            padding: 0 40px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        
+        .dropdown-content.open {
+            max-height: 1000px;
+            padding: 30px 40px;
+        }
+        
+        .dropdown-section.open .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .assumptions-grid {
+            display: grid;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .assumption-category {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 15px;
+            padding: 25px;
+        }
+        
+        .assumption-category h3 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #FFD700;
+            margin-bottom: 20px;
+            border-left: 4px solid #FFD700;
+            padding-left: 15px;
+        }
+        
+        .assumptions-list {
+            list-style: none;
+            margin: 0;
+        }
+        
+        .assumptions-list li {
+            background: rgba(255,215,0,0.1);
+            border-left: 4px solid #FFD700;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+        }
+        
+        .assumptions-list li:last-child {
+            margin-bottom: 0;
+        }
     </style>
 </head>
 <body>
@@ -659,8 +759,48 @@
             </div>
         </div>
         
+        <div class="dropdown-section" id="assumptionsSection">
+            <div class="dropdown-header" onclick="toggleDropdown('assumptionsSection')">
+                <h2>📋 Assumptions</h2>
+                <span class="dropdown-arrow">▼</span>
+            </div>
+            <div class="dropdown-content">
+                <div class="assumptions-grid">
+                    <div class="assumption-category">
+                        <h3>🔧 Technical Assumptions</h3>
+                        <ul class="assumptions-list">
+                            <li>WhatsApp's current infrastructure can support on-device AI processing for Wenie</li>
+                            <li>Wenie features must maintain end-to-end encryption for all collaborative data</li>
+                            <li>AI processing can be optimized for mobile devices with minimal battery impact</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="assumption-category">
+                        <h3>💼 Business Assumptions</h3>
+                        <ul class="assumptions-list">
+                            <li>Wenie AI features align with WhatsApp's mission</li>
+                            <li>Wenie supports both consumer and WhatsApp Business use cases</li>
+                            <li>Privacy-first AI approach differentiates us from competitors (Telegram, Discord)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="assumption-category">
+                        <h3>👥 User/Customer Assumptions</h3>
+                        <ul class="assumptions-list">
+                            <li>Users prefer staying within WhatsApp rather than switching apps</li>
+                            <li>Users are okay and give consent for AI usage in WhatsApp to bring collaboration</li>
+                            <li>Features must be discoverable without tutorials or onboarding</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div class="section">
             <h2>💡 Proposed Solution: Wenie AI Assistant</h2>
+            
+            <h3>🔧 How Wenie Works</h3>
+            <p>Wenie leverages advanced AI Language Learning Models (LLMs) to continuously read and analyze group conversations in real-time. By understanding context, patterns, and collaboration signals within chat flows, Wenie intelligently recommends the most relevant tools and actions based on conversation content and historical data patterns. This creates a seamless experience where coordination tools appear exactly when needed, without manual triggers or complex setup.</p>
             
             <h3>🎯 Core Concept</h3>
             <p>Wenie is a context-aware AI assistant embedded in WhatsApp to transform chaotic group chats into structured outcomes.</p>
@@ -815,6 +955,11 @@
                             <h4>Inclusive Design</h4>
                             <p>Works for tech-savvy users and digital novices alike, with visual clarity for all literacy levels and full accessibility features.</p>
                         </div>
+                        
+                        <div class="principle-item">
+                            <h4>Integrative & Export-Ready</h4>
+                            <p>Wenie is not isolated but seamlessly integrates with existing workflows. Generated results can be exported for further detailed work in specialized apps - polls to spreadsheets, schedules to calendars, summaries to project management tools. This makes Wenie more feasible by becoming a coordination hub rather than a replacement system.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -943,5 +1088,16 @@
             <p>The proposed solution leverages WhatsApp's core strengths - universal adoption, simplicity, and trust - while addressing validated user needs through native, intuitive features that require no behavior change.</p>
         </div>
     </div>
+
+    <script>
+        function toggleDropdown(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.dropdown-content');
+            const arrow = section.querySelector('.dropdown-arrow');
+            
+            section.classList.toggle('open');
+            content.classList.toggle('open');
+        }
+    </script>
 </body>
 </html>
