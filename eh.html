@@ -80,7 +80,7 @@
         
         .slide-container {
             position: relative;
-            height: 500px;
+            height: 300px;
             overflow: hidden;
         }
         
@@ -90,10 +90,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            padding: 30px;
+            padding: 40px 30px;
             opacity: 0;
             transform: translateX(100%);
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
         }
         
         .slide.active {
@@ -122,65 +126,10 @@
         
         .feature-description {
             color: rgba(255, 255, 255, 0.9);
-            font-size: 15px;
+            font-size: 16px;
             line-height: 1.6;
             margin-bottom: 20px;
             text-align: center;
-        }
-        
-        .mock-chat {
-            background: #111b21;
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 20px;
-            min-height: 200px;
-            position: relative;
-        }
-        
-        .mock-message {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 8px 12px;
-            margin-bottom: 8px;
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 80%;
-        }
-        
-        .mock-message.user {
-            background: #005c4b;
-            margin-left: auto;
-            text-align: right;
-        }
-        
-        .wenie-suggestion {
-            background: linear-gradient(135deg, #CE84CF, #9D4EDD);
-            border-radius: 12px;
-            padding: 12px 15px;
-            margin: 10px 0;
-            color: white;
-            font-size: 13px;
-            position: relative;
-            animation: suggestionPop 0.5s ease-out;
-        }
-        
-        @keyframes suggestionPop {
-            0% {
-                opacity: 0;
-                transform: scale(0.8) translateY(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-        
-        .suggestion-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 5px;
-            font-weight: 600;
         }
         
         .slideshow-controls {
@@ -1952,8 +1901,8 @@
 
     <div class="feature-slideshow">
         <div class="slideshow-header">
-            <h3 class="slideshow-title">🎆 Wenie Features</h3>
-            <p class="slideshow-subtitle">Discover the power of AI-driven collaboration</p>
+            <h3 class="slideshow-title">🎆 Key Features</h3>
+            <p class="slideshow-subtitle">Why Wenie transforms collaboration</p>
         </div>
         
         <div class="slide-container">
@@ -1962,17 +1911,6 @@
                 <div class="feature-icon">📱</div>
                 <h4 class="feature-title">Zero App Switching</h4>
                 <p class="feature-description">Native WhatsApp integration means everything happens where your conversations already live.</p>
-                <div class="mock-chat">
-                    <div class="mock-message">Hey team, when can we meet for the project review?</div>
-                    <div class="mock-message">I'm free Tuesday or Thursday</div>
-                    <div class="mock-message user">Wednesday works for me</div>
-                    <div class="wenie-suggestion">
-                        <div class="suggestion-header">
-                            🧞‍♂️ Wenie suggests:
-                        </div>
-                        Create a poll to find the best meeting time for everyone
-                    </div>
-                </div>
             </div>
             
             <!-- Slide 2: AI-Powered Intelligence -->
@@ -1980,34 +1918,13 @@
                 <div class="feature-icon">🤖</div>
                 <h4 class="feature-title">AI-Powered Intelligence</h4>
                 <p class="feature-description">Context-aware suggestions that understand your group's conversation patterns.</p>
-                <div class="mock-chat">
-                    <div class="mock-message">The client wants the feature by Friday</div>
-                    <div class="mock-message">That's tight, but doable if we split tasks</div>
-                    <div class="mock-message user">I can handle the frontend</div>
-                    <div class="wenie-suggestion">
-                        <div class="suggestion-header">
-                            🧞‍♂️ Wenie suggests:
-                        </div>
-                        Create task assignments and track progress for Friday deadline
-                    </div>
-                </div>
             </div>
             
             <!-- Slide 3: Adaptive Integration -->
             <div class="slide" data-slide="2">
                 <div class="feature-icon">🔗</div>
                 <h4 class="feature-title">Adaptive Integration</h4>
-                <p class="feature-description">Seamlessly connects with your existing tools like Jira, Slack, and Calendly.</p>
-                <div class="mock-chat">
-                    <div class="mock-message">We need to track this as a bug</div>
-                    <div class="mock-message user">High priority - affects user login</div>
-                    <div class="wenie-suggestion">
-                        <div class="suggestion-header">
-                            🧞‍♂️ Wenie suggests:
-                        </div>
-                        Create Jira ticket: "Login Bug - High Priority"
-                    </div>
-                </div>
+                <p class="feature-description">Connects with existing tools like Jira, Slack, and Calendly seamlessly.</p>
             </div>
             
             <!-- Slide 4: Individual to Enterprise -->
@@ -2015,17 +1932,6 @@
                 <div class="feature-icon">🌍</div>
                 <h4 class="feature-title">Individual to Enterprise</h4>
                 <p class="feature-description">Scales from friend groups planning dinner to enterprise teams managing projects.</p>
-                <div class="mock-chat">
-                    <div class="mock-message">Pizza or sushi for tonight?</div>
-                    <div class="mock-message">I vote pizza!</div>
-                    <div class="mock-message user">Sushi sounds good too</div>
-                    <div class="wenie-suggestion">
-                        <div class="suggestion-header">
-                            🧞‍♂️ Wenie suggests:
-                        </div>
-                        Quick poll: Pizza vs Sushi - 5 minute voting window
-                    </div>
-                </div>
             </div>
             
             <!-- Slide 5: Mission-First Design -->
@@ -2033,17 +1939,6 @@
                 <div class="feature-icon">🎯</div>
                 <h4 class="feature-title">Mission-First Design</h4>
                 <p class="feature-description">Outcome-focused features that turn conversations into actionable results.</p>
-                <div class="mock-chat">
-                    <div class="mock-message">Sprint planning meeting tomorrow</div>
-                    <div class="mock-message">What time works for everyone?</div>
-                    <div class="mock-message user">Morning preferred</div>
-                    <div class="wenie-suggestion">
-                        <div class="suggestion-header">
-                            🧞‍♂️ Wenie suggests:
-                        </div>
-                        Schedule "Sprint Planning" - Find optimal morning slot
-                    </div>
-                </div>
             </div>
             
             <!-- Slide 6: Effortless Usability -->
@@ -2051,16 +1946,6 @@
                 <div class="feature-icon">✨</div>
                 <h4 class="feature-title">Effortless Usability</h4>
                 <p class="feature-description">No learning curve required - Wenie works invisibly in your natural conversations.</p>
-                <div class="mock-chat">
-                    <div class="mock-message">Can someone summarize yesterday's discussion?</div>
-                    <div class="mock-message user">There were so many messages...</div>
-                    <div class="wenie-suggestion">
-                        <div class="suggestion-header">
-                            🧞‍♂️ Wenie suggests:
-                        </div>
-                        Generate smart summary of yesterday's key decisions
-                    </div>
-                </div>
             </div>
         </div>
         
