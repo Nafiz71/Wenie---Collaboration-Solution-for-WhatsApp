@@ -1405,6 +1405,50 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
         
+        /* New Clean CTA Buttons */
+        .demo-cta-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            text-decoration: none;
+            padding: 18px 32px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 15px;
+        }
+        
+        .demo-cta-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.4);
+            background: linear-gradient(135deg, #128C7E, #25D366);
+        }
+        
+        .doc-cta-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #9D4EDD, #CE84CF);
+            color: white;
+            text-decoration: none;
+            padding: 18px 32px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(157, 78, 221, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .doc-cta-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(157, 78, 221, 0.4);
+            background: linear-gradient(135deg, #CE84CF, #9D4EDD);
+        }
+        
         .privacy-badge {
             display: inline-flex;
             align-items: center;
@@ -1700,11 +1744,11 @@
         </div>
         
         <div class="cta-section">
-            <a href="./eh.html" class="cta-button" style="text-decoration: none; color: white; display: inline-block;">
-                🚀 Experience Wenie Demo
+            <a href="eh.html" class="demo-cta-btn">
+                🚀 Wenie Demo
             </a>
-            <a href="./journey.html" class="cta-button" style="background: linear-gradient(135deg, #9D4EDD, #CE84CF); text-decoration: none; color: white; margin-top: 15px; display: inline-block;">
-                📄 View Proposed Solution Document
+            <a href="journey.html" class="doc-cta-btn">
+                📄 Proposed Solution Document
             </a>
             <div class="privacy-badge">
                 🔒 Privacy-First • End-to-End Encrypted
