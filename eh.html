@@ -44,6 +44,207 @@
             transition: all 0.3s ease;
         }
         
+        /* Feature Slideshow Styles */
+        .feature-slideshow {
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 10;
+            animation: cardFloat 6s ease-in-out infinite alternate;
+            overflow: hidden;
+        }
+        
+        .slideshow-header {
+            padding: 25px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .slideshow-title {
+            color: #25D366;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .slideshow-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+        
+        .slide-container {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 30px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: block;
+            text-align: center;
+        }
+        
+        .feature-title {
+            color: #CE84CF;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .feature-description {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .mock-chat {
+            background: #111b21;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+            min-height: 200px;
+            position: relative;
+        }
+        
+        .mock-message {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 80%;
+        }
+        
+        .mock-message.user {
+            background: #005c4b;
+            margin-left: auto;
+            text-align: right;
+        }
+        
+        .wenie-suggestion {
+            background: linear-gradient(135deg, #CE84CF, #9D4EDD);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin: 10px 0;
+            color: white;
+            font-size: 13px;
+            position: relative;
+            animation: suggestionPop 0.5s ease-out;
+        }
+        
+        @keyframes suggestionPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .suggestion-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .slideshow-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .slide-nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .slide-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .slide-indicators {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .slide-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .slide-indicator.active {
+            background: #25D366;
+            transform: scale(1.2);
+        }
+        
+        .auto-play-indicator {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        @media (max-width: 1024px) {
+            .feature-slideshow {
+                display: none;
+            }
+        }
+        
         @keyframes auroraShift {
             0% {
                 background: radial-gradient(125% 125% at 50% 0%, #020617 50%, #25D366);
@@ -1749,6 +1950,136 @@
         </div>
     </div>
 
+    <div class="feature-slideshow">
+        <div class="slideshow-header">
+            <h3 class="slideshow-title">🎆 Wenie Features</h3>
+            <p class="slideshow-subtitle">Discover the power of AI-driven collaboration</p>
+        </div>
+        
+        <div class="slide-container">
+            <!-- Slide 1: Zero App Switching -->
+            <div class="slide active" data-slide="0">
+                <div class="feature-icon">📱</div>
+                <h4 class="feature-title">Zero App Switching</h4>
+                <p class="feature-description">Native WhatsApp integration means everything happens where your conversations already live.</p>
+                <div class="mock-chat">
+                    <div class="mock-message">Hey team, when can we meet for the project review?</div>
+                    <div class="mock-message">I'm free Tuesday or Thursday</div>
+                    <div class="mock-message user">Wednesday works for me</div>
+                    <div class="wenie-suggestion">
+                        <div class="suggestion-header">
+                            🧞‍♂️ Wenie suggests:
+                        </div>
+                        Create a poll to find the best meeting time for everyone
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 2: AI-Powered Intelligence -->
+            <div class="slide" data-slide="1">
+                <div class="feature-icon">🤖</div>
+                <h4 class="feature-title">AI-Powered Intelligence</h4>
+                <p class="feature-description">Context-aware suggestions that understand your group's conversation patterns.</p>
+                <div class="mock-chat">
+                    <div class="mock-message">The client wants the feature by Friday</div>
+                    <div class="mock-message">That's tight, but doable if we split tasks</div>
+                    <div class="mock-message user">I can handle the frontend</div>
+                    <div class="wenie-suggestion">
+                        <div class="suggestion-header">
+                            🧞‍♂️ Wenie suggests:
+                        </div>
+                        Create task assignments and track progress for Friday deadline
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 3: Adaptive Integration -->
+            <div class="slide" data-slide="2">
+                <div class="feature-icon">🔗</div>
+                <h4 class="feature-title">Adaptive Integration</h4>
+                <p class="feature-description">Seamlessly connects with your existing tools like Jira, Slack, and Calendly.</p>
+                <div class="mock-chat">
+                    <div class="mock-message">We need to track this as a bug</div>
+                    <div class="mock-message user">High priority - affects user login</div>
+                    <div class="wenie-suggestion">
+                        <div class="suggestion-header">
+                            🧞‍♂️ Wenie suggests:
+                        </div>
+                        Create Jira ticket: "Login Bug - High Priority"
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 4: Individual to Enterprise -->
+            <div class="slide" data-slide="3">
+                <div class="feature-icon">🌍</div>
+                <h4 class="feature-title">Individual to Enterprise</h4>
+                <p class="feature-description">Scales from friend groups planning dinner to enterprise teams managing projects.</p>
+                <div class="mock-chat">
+                    <div class="mock-message">Pizza or sushi for tonight?</div>
+                    <div class="mock-message">I vote pizza!</div>
+                    <div class="mock-message user">Sushi sounds good too</div>
+                    <div class="wenie-suggestion">
+                        <div class="suggestion-header">
+                            🧞‍♂️ Wenie suggests:
+                        </div>
+                        Quick poll: Pizza vs Sushi - 5 minute voting window
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 5: Mission-First Design -->
+            <div class="slide" data-slide="4">
+                <div class="feature-icon">🎯</div>
+                <h4 class="feature-title">Mission-First Design</h4>
+                <p class="feature-description">Outcome-focused features that turn conversations into actionable results.</p>
+                <div class="mock-chat">
+                    <div class="mock-message">Sprint planning meeting tomorrow</div>
+                    <div class="mock-message">What time works for everyone?</div>
+                    <div class="mock-message user">Morning preferred</div>
+                    <div class="wenie-suggestion">
+                        <div class="suggestion-header">
+                            🧞‍♂️ Wenie suggests:
+                        </div>
+                        Schedule "Sprint Planning" - Find optimal morning slot
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 6: Effortless Usability -->
+            <div class="slide" data-slide="5">
+                <div class="feature-icon">✨</div>
+                <h4 class="feature-title">Effortless Usability</h4>
+                <p class="feature-description">No learning curve required - Wenie works invisibly in your natural conversations.</p>
+                <div class="mock-chat">
+                    <div class="mock-message">Can someone summarize yesterday's discussion?</div>
+                    <div class="mock-message user">There were so many messages...</div>
+                    <div class="wenie-suggestion">
+                        <div class="suggestion-header">
+                            🧞‍♂️ Wenie suggests:
+                        </div>
+                        Generate smart summary of yesterday's key decisions
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slideshow-controls">
+            <button class="slide-nav-btn" onclick="previousSlide()">◀</button>
+            <div class="slide-indicators">
+                <div class="slide-indicator active" onclick="goToSlide(0)"></div>
+                <div class="slide-indicator" onclick="goToSlide(1)"></div>
+                <div class="slide-indicator" onclick="goToSlide(2)"></div>
+                <div class="slide-indicator" onclick="goToSlide(3)"></div>
+                <div class="slide-indicator" onclick="goToSlide(4)"></div>
+                <div class="slide-indicator" onclick="goToSlide(5)"></div>
+            </div>
+            <button class="slide-nav-btn" onclick="nextSlide()">▶</button>
+        </div>
+        
+        <div class="auto-play-indicator">Auto-advancing every 4 seconds</div>
+    </div>
+
     <script>
         // Audio Context and Sound Effects
         let audioContext;
@@ -3032,6 +3363,92 @@
         document.querySelector('.message-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 sendMessage();
+            }
+        });
+        
+        // Feature Slideshow Functionality
+        let currentSlideIndex = 0;
+        let slideshowTimer;
+        const totalSlides = 6;
+        
+        function initSlideshow() {
+            startAutoPlay();
+        }
+        
+        function startAutoPlay() {
+            slideshowTimer = setInterval(() => {
+                nextSlide();
+            }, 4000); // 4 second intervals
+        }
+        
+        function stopAutoPlay() {
+            if (slideshowTimer) {
+                clearInterval(slideshowTimer);
+            }
+        }
+        
+        function nextSlide() {
+            const currentSlide = document.querySelector('.slide.active');
+            const nextIndex = (currentSlideIndex + 1) % totalSlides;
+            
+            goToSlide(nextIndex);
+        }
+        
+        function previousSlide() {
+            const prevIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+            goToSlide(prevIndex);
+        }
+        
+        function goToSlide(index) {
+            const currentSlide = document.querySelector('.slide.active');
+            const targetSlide = document.querySelector(`[data-slide="${index}"]`);
+            const currentIndicator = document.querySelector('.slide-indicator.active');
+            const targetIndicator = document.querySelectorAll('.slide-indicator')[index];
+            
+            if (!targetSlide || index === currentSlideIndex) return;
+            
+            // Remove active classes
+            currentSlide.classList.remove('active');
+            currentIndicator.classList.remove('active');
+            
+            // Add prev class for smooth transition
+            currentSlide.classList.add('prev');
+            
+            // Set new active slide
+            setTimeout(() => {
+                targetSlide.classList.add('active');
+                targetIndicator.classList.add('active');
+                currentSlideIndex = index;
+                
+                // Animate Wenie suggestion
+                const wenieElement = targetSlide.querySelector('.wenie-suggestion');
+                if (wenieElement) {
+                    wenieElement.style.animation = 'none';
+                    setTimeout(() => {
+                        wenieElement.style.animation = 'suggestionPop 0.5s ease-out';
+                    }, 300);
+                }
+                
+                // Clean up prev class
+                setTimeout(() => {
+                    currentSlide.classList.remove('prev');
+                }, 600);
+            }, 50);
+            
+            // Restart auto-play timer
+            stopAutoPlay();
+            startAutoPlay();
+        }
+        
+        // Pause slideshow on hover
+        document.addEventListener('DOMContentLoaded', () => {
+            const slideshow = document.querySelector('.feature-slideshow');
+            if (slideshow) {
+                slideshow.addEventListener('mouseenter', stopAutoPlay);
+                slideshow.addEventListener('mouseleave', startAutoPlay);
+                
+                // Initialize slideshow
+                initSlideshow();
             }
         });
     </script>
