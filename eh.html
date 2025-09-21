@@ -1961,8 +1961,6 @@
             </div>
             <button class="slide-nav-btn" onclick="nextSlide()">▶</button>
         </div>
-        
-        <div class="auto-play-indicator">Auto-advancing every 4 seconds</div>
     </div>
 
     <script>
@@ -3273,9 +3271,7 @@
         }
         
         function nextSlide() {
-            const currentSlide = document.querySelector('.slide.active');
             const nextIndex = (currentSlideIndex + 1) % totalSlides;
-            
             goToSlide(nextIndex);
         }
         
@@ -3304,15 +3300,6 @@
                 targetSlide.classList.add('active');
                 targetIndicator.classList.add('active');
                 currentSlideIndex = index;
-                
-                // Animate Wenie suggestion
-                const wenieElement = targetSlide.querySelector('.wenie-suggestion');
-                if (wenieElement) {
-                    wenieElement.style.animation = 'none';
-                    setTimeout(() => {
-                        wenieElement.style.animation = 'suggestionPop 0.5s ease-out';
-                    }, 300);
-                }
                 
                 // Clean up prev class
                 setTimeout(() => {
